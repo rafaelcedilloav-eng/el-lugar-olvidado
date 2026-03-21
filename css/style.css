@@ -1,0 +1,256 @@
+/* ============================================
+   EL LUGAR OLVIDADO — Estilos principales
+   Paleta: negro profundo + púrpura + pergamino
+   ============================================ */
+
+/* Variables globales — cambia aquí, cambia en todo el sitio */
+:root {
+  --bg-deep:      #1A1020;
+  --bg-mid:       #2D1F3D;
+  --bg-card:      rgba(255, 255, 255, 0.04);
+  --accent:       #8B6FBE;
+  --accent-light: #C4A8E8;
+  --text-primary: #F0EAD6;
+  --text-muted:   rgba(240, 234, 214, 0.55);
+  --border:       rgba(139, 111, 190, 0.15);
+  --font-serif:   Georgia, 'Times New Roman', serif;
+  --font-sans:    'Segoe UI', system-ui, sans-serif;
+}
+
+/* Reset base */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent-light);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+a:hover {
+  color: var(--text-primary);
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ── NAVEGACIÓN ── */
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 3rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-deep);
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links a {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--text-primary);
+}
+
+/* ── HERO ── */
+.hero {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero-kicker {
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: normal;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 1.25rem;
+}
+
+.hero-tagline {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 2.5rem;
+}
+
+.hero-btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border: 1px solid var(--accent);
+  border-radius: 2rem;
+  color: var(--accent-light);
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  transition: all 0.2s;
+}
+
+.hero-btn:hover {
+  background: var(--accent);
+  color: var(--bg-deep);
+}
+
+/* ── CATEGORÍAS ── */
+.categories {
+  padding: 6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: normal;
+  color: var(--text-primary);
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.cat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.cat-card:hover {
+  border-color: var(--accent);
+  background: rgba(139, 111, 190, 0.06);
+}
+
+.cat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.cat-card h3 {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: normal;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.cat-card p {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── MANIFIESTO ── */
+.manifesto {
+  padding: 6rem 0;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.manifesto-kicker {
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 2rem;
+}
+
+.manifesto-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 3vw, 2.2rem);
+  font-style: italic;
+  color: var(--text-primary);
+  line-height: 1.5;
+  max-width: 700px;
+  margin: 0 auto 2.5rem;
+}
+
+.manifesto-btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.manifesto-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent-light);
+}
+
+/* ── FOOTER ── */
+.footer {
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.footer-name {
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--text-primary);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+
+.footer-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+}

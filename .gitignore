@@ -1,0 +1,8 @@
+# Seguridad — archivos que nunca se suben a GitHub
+.env
+.env.local
+.env.production
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
