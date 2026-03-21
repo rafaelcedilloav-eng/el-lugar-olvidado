@@ -1,0 +1,97 @@
+/* ============================================
+   EL LUGAR OLVIDADO — Manifiesto
+   Diseño editorial de lectura larga
+   ============================================ */
+
+/* ── CABECERA ── */
+.mani-header {
+  text-align: center;
+  padding: 8rem 2rem 5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.mani-kicker {
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 1.5rem;
+}
+
+.mani-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: normal;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.mani-fecha {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+/* ── CUERPO ── */
+.mani-body {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 5rem 2rem 8rem;
+}
+
+.mani-intro {
+  font-family: var(--font-serif);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-style: italic;
+  color: var(--accent-light);
+  line-height: 1.5;
+  margin-bottom: 3.5rem;
+  padding-bottom: 3.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.mani-body p {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  line-height: 1.9;
+  margin-bottom: 1.75rem;
+}
+
+.mani-body h2 {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: normal;
+  color: var(--text-primary);
+  margin: 3.5rem 0 1.25rem;
+  padding-top: 3.5rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ── FIRMA ── */
+.mani-firma {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.mani-firma p {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  font-style: italic;
+  margin-bottom: 0.25rem;
+}
+
+.mani-firma-sub {
+  font-size: 0.8rem !important;
+  color: var(--text-muted) !important;
+  font-style: normal !important;
+  letter-spacing: 0.04em;
+}
+
+/* ── NAV ACTIVO ── */
+.nav-active {
+  color: var(--accent-light) !important;
+}
