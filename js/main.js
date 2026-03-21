@@ -44,29 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
       observer.observe(el);
     });
 
+    // ── Menú hamburguesa para móvil
+  window.toggleMenu = function() {
+    const nav = document.getElementById('main-nav');
+    nav.classList.toggle('nav-menu-open');
+  };
+
+  // Cerrar menú al hacer click en un link
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('main-nav')
+        .classList.remove('nav-menu-open');
+    });
+  });
+
 });
-```
-
----
-
-**¿Qué hace este JavaScript?**
-
-Dos cosas concretas:
-
-La navegación se oculta cuando scrolleas hacia abajo — porque cuando lees, no necesitas la nav ocupando espacio — y reaparece cuando subes, porque ahí sí la necesitas. Es el comportamiento que ves en sitios premium.
-
-Las tarjetas y secciones aparecen con una animación suave cuando llegas a ellas en lugar de estar todas cargadas de golpe. Eso se llama `IntersectionObserver` — el navegador detecta cuándo un elemento entra al campo de visión y lo hace visible gradualmente.
-
----
-
-**Paso 8 — Guardar y publicar**
-
-Ahora viene el momento. Todo lo que escribiste hay que enviarlo a GitHub para que el sitio se actualice en vivo.
-
-En VS Code del navegador, esto se hace así:
-
-1. Click en el ícono de **rama/control de versiones** en la barra izquierda — parece un círculo con líneas
-2. Verás todos los archivos que creaste listados como cambios pendientes
-3. En el campo que dice **"Message"** escribe:
-```
-primer commit: estructura base de El Lugar Olvidado

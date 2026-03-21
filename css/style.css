@@ -254,3 +254,145 @@ a:hover {
   color: var(--text-muted);
   font-style: italic;
 }
+
+/* ============================================
+   RESPONSIVE — Móvil y tablet
+   ============================================ */
+
+/* Tablet — pantallas menores a 768px */
+@media (max-width: 768px) {
+
+  /* Nav: ocultar links, solo mostrar logo */
+  .nav {
+    padding: 1.25rem 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .nav-logo {
+    font-size: 1.1rem;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 3rem 1.5rem;
+    min-height: 80vh;
+  }
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-tagline {
+    font-size: 1rem;
+  }
+
+  /* Categorías: 2 columnas en tablet */
+  .categories-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .categories {
+    padding: 4rem 0;
+  }
+
+  /* Manifiesto */
+  .manifesto {
+    padding: 4rem 0;
+  }
+
+  .manifesto-quote {
+    font-size: 1.3rem;
+  }
+}
+
+/* Móvil — pantallas menores a 480px */
+@media (max-width: 480px) {
+
+  /* Nav con menú hamburguesa */
+  .nav {
+    padding: 1rem 1.25rem;
+    position: relative;
+  }
+
+  .nav-hamburger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .nav-hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .nav-menu-open .nav-links {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-mid);
+    padding: 1.5rem;
+    gap: 1.25rem;
+    border-bottom: 1px solid var(--border);
+    z-index: 99;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 2.5rem 1.25rem;
+    min-height: 70vh;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-kicker {
+    font-size: 0.7rem;
+  }
+
+  .hero-btn {
+    padding: 0.65rem 1.5rem;
+    font-size: 0.85rem;
+  }
+
+  /* Categorías: 1 columna en móvil */
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .categories {
+    padding: 3rem 0;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  /* Manifiesto */
+  .manifesto {
+    padding: 3rem 0;
+  }
+
+  .manifesto-quote {
+    font-size: 1.1rem;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 2rem 0;
+  }
+}
