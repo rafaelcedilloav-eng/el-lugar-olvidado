@@ -20,9 +20,14 @@
 <body>
 
   <!-- NAVEGACIÓN -->
-  <nav class="nav">
+  <nav class="nav" id="main-nav">
     <a href="index.html" class="nav-logo">El Lugar Olvidado</a>
-    <div class="nav-links">
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-links" id="nav-links">
       <a href="index.html">Explorar</a>
       <a href="#">Debates</a>
       <a href="manifiesto.html" class="nav-active">Manifiesto</a>
