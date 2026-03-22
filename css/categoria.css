@@ -34,6 +34,15 @@ body:has(.video-bg) .nav {
   background: rgba(6, 6, 8, 0.6);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(139, 111, 190, 0.1);
+  body:has(.video-bg) .nav-logo {
+  color: #F0EAD6;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+  font-weight: 500;
+}
+
+body:has(.video-bg) .nav-links a {
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
 }
 
 /* ── HERO ── */
@@ -391,10 +400,15 @@ body:has(.video-bg) .nav {
 /* Teología — dorado */
 .cat-teologia .cat-titulo {
   color: #FFF8E1;
-  text-shadow: 0 0 40px rgba(232,160,32,0.5), 0 2px 8px rgba(0,0,0,0.9);
+  text-shadow: 0 0 40px rgba(232,160,32,0.6), 0 2px 12px rgba(0,0,0,1), 0 4px 24px rgba(0,0,0,1);
 }
-.cat-teologia .cat-kicker { color: rgba(232,160,32,0.9); }
-.cat-teologia .cat-tagline { color: rgba(255,248,225,0.85); }
+.cat-teologia .cat-kicker {
+  color: rgba(232,160,32,1);
+  text-shadow: 0 2px 12px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,1);
+}
+.cat-teologia .cat-tagline {
+  color: rgba(255,248,225,1);
+  text-shadow: 0 2px 12px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,1);
 .cat-teologia .ens-row-num { color: rgba(232,160,32,0.5); }
 .cat-teologia .ens-row:hover { border-color: rgba(232,160,32,0.5); }
 .cat-teologia .cat-ensayos-label { color: rgba(232,160,32,0.7); }
