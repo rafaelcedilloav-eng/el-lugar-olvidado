@@ -94,32 +94,58 @@ body:has(.video-bg) .nav {
 }
 
 .obs-r1 {
-  width: 280px;
-  height: 280px;
-  border-radius: 50%;
-  border: 1px solid rgba(139, 111, 190, 0.06);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: obsRotate 30s linear infinite;
-}
-
-.obs-r2 {
-  width: 180px;
-  height: 180px;
+  width: 320px;
+  height: 320px;
   border-radius: 50%;
   border: 1px solid rgba(139, 111, 190, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
+  animation: obsRotate 30s linear infinite;
+  position: relative;
+}
+
+.obs-r1::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(196, 168, 232, 0.5);
+  transform: translateX(-50%);
+}
+
+.obs-r2 {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 111, 190, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: obsRotate 18s linear infinite reverse;
+  position: relative;
+}
+
+.obs-r2::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(196, 168, 232, 0.4);
+  transform: translateX(-50%);
 }
 
 .obs-r3 {
-  width: 90px;
-  height: 90px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
-  border: 1px solid rgba(139, 111, 190, 0.2);
+  border: 1px solid rgba(139, 111, 190, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -127,12 +153,12 @@ body:has(.video-bg) .nav {
 }
 
 .obs-core {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(196, 168, 232, 0.5), rgba(139, 111, 190, 0.15));
+  background: radial-gradient(circle, rgba(196, 168, 232, 0.6), rgba(139, 111, 190, 0.15));
   animation: obsPulse 4s ease-in-out infinite;
-  box-shadow: 0 0 30px rgba(139, 111, 190, 0.35);
+  box-shadow: 0 0 40px rgba(139, 111, 190, 0.5), 0 0 80px rgba(139, 111, 190, 0.15);
 }
 
 @keyframes obsRotate {
@@ -141,103 +167,131 @@ body:has(.video-bg) .nav {
 }
 
 @keyframes obsPulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.3); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.6; box-shadow: 0 0 40px rgba(139,111,190,0.4); }
+  50% { transform: scale(1.4); opacity: 1; box-shadow: 0 0 60px rgba(139,111,190,0.7), 0 0 100px rgba(139,111,190,0.2); }
 }
 
 /* ── FIGURA SENTADA ── */
 .figura {
   position: absolute;
-  bottom: 18%;
-  left: 28%;
+  bottom: 16%;
+  left: 26%;
   z-index: 5;
-  opacity: 0.45;
-  animation: figBreathe 5s ease-in-out infinite;
+  opacity: 0;
+  animation: figAppear 2s ease forwards 1s, figBreathe 5s ease-in-out infinite 3s;
 }
 
 .fig-head {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
-  background: rgba(240, 234, 214, 0.25);
-  margin: 0 auto 2px;
+  background: rgba(240, 234, 214, 0.3);
+  margin: 0 auto 3px;
+  box-shadow: 0 0 8px rgba(240, 234, 214, 0.15);
 }
 
 .fig-body {
-  width: 16px;
-  height: 26px;
-  background: rgba(240, 234, 214, 0.18);
+  width: 18px;
+  height: 28px;
+  background: rgba(240, 234, 214, 0.2);
   border-radius: 3px 3px 0 0;
   margin: 0 auto;
 }
 
 .fig-arm-l {
   position: absolute;
-  top: 20px;
-  left: -8px;
-  width: 10px;
+  top: 22px;
+  left: -10px;
+  width: 12px;
   height: 4px;
-  background: rgba(240, 234, 214, 0.15);
+  background: rgba(240, 234, 214, 0.18);
   border-radius: 2px;
   transform: rotate(20deg);
 }
 
 .fig-arm-r {
   position: absolute;
-  top: 20px;
-  right: -8px;
-  width: 10px;
+  top: 22px;
+  right: -10px;
+  width: 12px;
   height: 4px;
-  background: rgba(240, 234, 214, 0.15);
+  background: rgba(240, 234, 214, 0.18);
   border-radius: 2px;
   transform: rotate(-20deg);
 }
 
 .fig-legs {
-  width: 24px;
-  height: 10px;
-  background: rgba(240, 234, 214, 0.14);
-  border-radius: 0 0 6px 6px;
+  width: 26px;
+  height: 12px;
+  background: rgba(240, 234, 214, 0.16);
+  border-radius: 0 0 8px 8px;
   margin: 0 auto;
 }
 
+/* Etiqueta del vacío junto a la figura */
+.figura::after {
+  content: '"¿Qué buscamos?"';
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.6rem;
+  color: rgba(240, 234, 214, 0.2);
+  white-space: nowrap;
+  font-style: italic;
+  font-family: Georgia, serif;
+}
+
+@keyframes figAppear {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 0.55; transform: translateY(0); }
+}
+
 @keyframes figBreathe {
-  0%, 100% { opacity: 0.45; transform: translateY(0); }
-  50% { opacity: 0.65; transform: translateY(-3px); }
+  0%, 100% { opacity: 0.55; transform: translateY(0); }
+  50% { opacity: 0.75; transform: translateY(-4px); }
 }
 
 /* ── VACÍO ── */
 .vacio {
   position: absolute;
-  bottom: 18%;
-  right: 28%;
+  bottom: 16%;
+  right: 26%;
   z-index: 5;
+  opacity: 0;
+  animation: voidAppear 2s ease forwards 1.5s;
 }
 
 .vacio-shape {
-  width: 50px;
-  height: 50px;
-  background: rgba(139, 111, 190, 0.08);
-  border: 1px solid rgba(139, 111, 190, 0.2);
+  width: 58px;
+  height: 58px;
+  background: rgba(139, 111, 190, 0.06);
+  border: 1px solid rgba(139, 111, 190, 0.22);
   animation: voidMorph 9s ease-in-out infinite;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 20px rgba(139, 111, 190, 0.08);
 }
 
 .vacio-inner {
-  width: 22px;
-  height: 22px;
-  background: rgba(139, 111, 190, 0.06);
-  border: 1px solid rgba(139, 111, 190, 0.14);
+  width: 26px;
+  height: 26px;
+  background: rgba(139, 111, 190, 0.05);
+  border: 1px solid rgba(139, 111, 190, 0.15);
   animation: voidMorph 6s ease-in-out infinite reverse;
 }
 
+@keyframes voidAppear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @keyframes voidMorph {
-  0%, 100% { border-radius: 60% 40% 55% 45%/45% 55% 40% 60%; opacity: 0.2; }
-  25% { border-radius: 40% 60% 45% 55%/55% 45% 60% 40%; opacity: 0.35; }
-  50% { border-radius: 55% 45% 60% 40%/40% 60% 45% 55%; opacity: 0.18; }
-  75% { border-radius: 45% 55% 40% 60%/60% 40% 55% 45%; opacity: 0.3; }
+  0%, 100% { border-radius: 60% 40% 55% 45%/45% 55% 40% 60%; opacity: 0.25; }
+  25% { border-radius: 40% 60% 45% 55%/55% 45% 60% 40%; opacity: 0.4; }
+  50% { border-radius: 55% 45% 60% 40%/40% 60% 45% 55%; opacity: 0.2; }
+  75% { border-radius: 45% 55% 40% 60%/60% 40% 55% 45%; opacity: 0.35; }
 }
 
 /* ── SCROLL HINT ── */
@@ -276,8 +330,8 @@ body:has(.video-bg) .nav {
 .cat-ensayos {
   position: relative;
   z-index: 10;
-  background: rgba(6, 6, 8, 0.85);
-  backdrop-filter: blur(20px);
+  background: rgba(6, 6, 8, 0.55);
+  backdrop-filter: blur(8px);
   border-top: 1px solid rgba(139, 111, 190, 0.12);
   padding: 4rem 0 6rem;
 }
