@@ -1,0 +1,402 @@
+/* ============================================
+   EL LUGAR OLVIDADO — Páginas de categoría
+   Video fondo + elementos en capas
+   ============================================ */
+
+/* ── VIDEO FONDO ── */
+.video-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.video-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(6, 6, 8, 0.72);
+}
+
+/* ── NAV override para categorías ── */
+body:has(.video-bg) .nav {
+  background: rgba(6, 6, 8, 0.6);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(139, 111, 190, 0.1);
+}
+
+/* ── HERO ── */
+.cat-hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding: 6rem 2rem 4rem;
+}
+
+.cat-hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+.cat-kicker {
+  font-size: 0.7rem;
+  color: rgba(139, 111, 190, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  margin-bottom: 1rem;
+}
+
+.cat-titulo {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 12vw, 8rem);
+  font-weight: normal;
+  color: #F0EAD6;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 60px rgba(139, 111, 190, 0.3);
+}
+
+.cat-tagline {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: rgba(240, 234, 214, 0.5);
+  line-height: 1.7;
+}
+
+.cat-tagline span {
+  font-size: 0.9rem;
+  color: rgba(240, 234, 214, 0.3);
+}
+
+/* ── OBSERVADOR ── */
+.observer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+
+.obs-r1 {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 111, 190, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: obsRotate 30s linear infinite;
+}
+
+.obs-r2 {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 111, 190, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: obsRotate 18s linear infinite reverse;
+}
+
+.obs-r3 {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 1px solid rgba(139, 111, 190, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: obsRotate 10s linear infinite;
+}
+
+.obs-core {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196, 168, 232, 0.5), rgba(139, 111, 190, 0.15));
+  animation: obsPulse 4s ease-in-out infinite;
+  box-shadow: 0 0 30px rgba(139, 111, 190, 0.35);
+}
+
+@keyframes obsRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes obsPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.3); opacity: 1; }
+}
+
+/* ── FIGURA SENTADA ── */
+.figura {
+  position: absolute;
+  bottom: 18%;
+  left: 28%;
+  z-index: 5;
+  opacity: 0.45;
+  animation: figBreathe 5s ease-in-out infinite;
+}
+
+.fig-head {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(240, 234, 214, 0.25);
+  margin: 0 auto 2px;
+}
+
+.fig-body {
+  width: 16px;
+  height: 26px;
+  background: rgba(240, 234, 214, 0.18);
+  border-radius: 3px 3px 0 0;
+  margin: 0 auto;
+}
+
+.fig-arm-l {
+  position: absolute;
+  top: 20px;
+  left: -8px;
+  width: 10px;
+  height: 4px;
+  background: rgba(240, 234, 214, 0.15);
+  border-radius: 2px;
+  transform: rotate(20deg);
+}
+
+.fig-arm-r {
+  position: absolute;
+  top: 20px;
+  right: -8px;
+  width: 10px;
+  height: 4px;
+  background: rgba(240, 234, 214, 0.15);
+  border-radius: 2px;
+  transform: rotate(-20deg);
+}
+
+.fig-legs {
+  width: 24px;
+  height: 10px;
+  background: rgba(240, 234, 214, 0.14);
+  border-radius: 0 0 6px 6px;
+  margin: 0 auto;
+}
+
+@keyframes figBreathe {
+  0%, 100% { opacity: 0.45; transform: translateY(0); }
+  50% { opacity: 0.65; transform: translateY(-3px); }
+}
+
+/* ── VACÍO ── */
+.vacio {
+  position: absolute;
+  bottom: 18%;
+  right: 28%;
+  z-index: 5;
+}
+
+.vacio-shape {
+  width: 50px;
+  height: 50px;
+  background: rgba(139, 111, 190, 0.08);
+  border: 1px solid rgba(139, 111, 190, 0.2);
+  animation: voidMorph 9s ease-in-out infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vacio-inner {
+  width: 22px;
+  height: 22px;
+  background: rgba(139, 111, 190, 0.06);
+  border: 1px solid rgba(139, 111, 190, 0.14);
+  animation: voidMorph 6s ease-in-out infinite reverse;
+}
+
+@keyframes voidMorph {
+  0%, 100% { border-radius: 60% 40% 55% 45%/45% 55% 40% 60%; opacity: 0.2; }
+  25% { border-radius: 40% 60% 45% 55%/55% 45% 60% 40%; opacity: 0.35; }
+  50% { border-radius: 55% 45% 60% 40%/40% 60% 45% 55%; opacity: 0.18; }
+  75% { border-radius: 45% 55% 40% 60%/60% 40% 55% 45%; opacity: 0.3; }
+}
+
+/* ── SCROLL HINT ── */
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+  animation: hintFade 3s ease-in-out infinite;
+}
+
+.scroll-hint span {
+  font-size: 0.7rem;
+  color: rgba(240, 234, 214, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.scroll-arrow {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, rgba(139, 111, 190, 0.5), transparent);
+}
+
+@keyframes hintFade {
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+  50% { opacity: 0.8; transform: translateX(-50%) translateY(4px); }
+}
+
+/* ── SECCIÓN ENSAYOS ── */
+.cat-ensayos {
+  position: relative;
+  z-index: 10;
+  background: rgba(6, 6, 8, 0.85);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(139, 111, 190, 0.12);
+  padding: 4rem 0 6rem;
+}
+
+.cat-ensayos-inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.cat-ensayos-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(139, 111, 190, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  margin-bottom: 2rem;
+}
+
+/* ── FILAS DE ENSAYO ── */
+.ens-row {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 20px;
+  align-items: start;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(139, 111, 190, 0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s;
+}
+
+.ens-row:first-of-type {
+  border-top: 1px solid rgba(139, 111, 190, 0.08);
+}
+
+.ens-row:hover {
+  padding-left: 8px;
+}
+
+.ens-row:hover .ens-row-arr {
+  color: #C4A8E8;
+  transform: translateX(6px);
+}
+
+.ens-row-num {
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  color: rgba(139, 111, 190, 0.5);
+  padding-top: 3px;
+  letter-spacing: 0.06em;
+}
+
+.ens-row-titulo {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: #F0EAD6;
+  line-height: 1.35;
+  margin-bottom: 0.5rem;
+}
+
+.ens-row-sub {
+  font-family: var(--font-serif);
+  font-size: 0.875rem;
+  color: rgba(240, 234, 214, 0.45);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.ens-row-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  padding-top: 3px;
+  min-width: 60px;
+}
+
+.ens-row-fecha {
+  font-size: 0.72rem;
+  color: rgba(240, 234, 214, 0.3);
+  letter-spacing: 0.04em;
+}
+
+.ens-row-arr {
+  color: rgba(139, 111, 190, 0.4);
+  font-size: 1rem;
+  transition: color 0.2s, transform 0.2s;
+  display: inline-block;
+}
+
+/* ── FOOTER override ── */
+.cat-ensayos ~ .footer {
+  position: relative;
+  z-index: 10;
+  background: rgba(6, 6, 8, 0.9);
+  border-top: 1px solid rgba(139, 111, 190, 0.08);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  .cat-titulo {
+    font-size: 4rem;
+  }
+
+  .obs-r1 { width: 220px; height: 220px; }
+  .obs-r2 { width: 140px; height: 140px; }
+  .obs-r3 { width: 70px; height: 70px; }
+
+  .figura { left: 12%; }
+  .vacio { right: 12%; }
+
+  .ens-row {
+    grid-template-columns: 32px 1fr;
+    gap: 12px;
+  }
+
+  .ens-row-meta {
+    display: none;
+  }
+}
