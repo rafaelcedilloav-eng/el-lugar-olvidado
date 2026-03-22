@@ -352,4 +352,15 @@ body:has(.video-bg) .nav {
   .ens-row-meta {
     display: none;
   }
+
+  .cat-proximos {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: rgba(240, 234, 214, 0.35);
+  text-align: center;
+  padding: 3rem 0;
+  line-height: 1.8;
+}
+
 }
