@@ -400,18 +400,30 @@ body:has(.video-bg) .nav-links a {
 /* Teología — dorado */
 .cat-teologia .cat-titulo {
   color: #FFF8E1;
-  text-shadow: 0 0 40px rgba(232,160,32,0.6), 0 2px 12px rgba(0,0,0,1), 0 4px 24px rgba(0,0,0,1);
+  text-shadow: 
+    0 0 0 rgba(0,0,0,1),
+    -1px -1px 0 rgba(0,0,0,1),
+    1px -1px 0 rgba(0,0,0,1),
+    -1px 1px 0 rgba(0,0,0,1),
+    1px 1px 0 rgba(0,0,0,1),
+    0 4px 20px rgba(0,0,0,1),
+    0 0 40px rgba(0,0,0,0.9);
 }
+
 .cat-teologia .cat-kicker {
-  color: rgba(232,160,32,1);
-  text-shadow: 0 2px 12px rgba(0,0,0,1), 0 0 20px rgba(0,0,0,1);
+  color: #E8A020;
+  background: rgba(0,0,0,0.5);
+  padding: 2px 8px;
+  border-radius: 4px;
 }
+
 .cat-teologia .cat-tagline {
-  color: rgba(255,248,225,1);
-  text-shadow: 0 2px 12px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,1);
-.cat-teologia .ens-row-num { color: rgba(232,160,32,0.5); }
-.cat-teologia .ens-row:hover { border-color: rgba(232,160,32,0.5); }
-.cat-teologia .cat-ensayos-label { color: rgba(232,160,32,0.7); }
+  color: #FFF8E1;
+  background: rgba(0,0,0,0.45);
+  padding: 4px 12px;
+  border-radius: 6px;
+  display: inline-block;
+}
 
 /* Cosmología — rojo nebulosa */
 .cat-cosmologia .cat-titulo {
