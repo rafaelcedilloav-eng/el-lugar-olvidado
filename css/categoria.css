@@ -59,6 +59,7 @@ body:has(.video-bg) .nav {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,1);
 }
 
 .cat-titulo {
@@ -75,13 +76,15 @@ body:has(.video-bg) .nav {
   font-family: var(--font-serif);
   font-size: 1.1rem;
   font-style: italic;
-  color: rgba(240, 234, 214, 0.5);
+  color: rgba(240, 234, 214, 0.85);
   line-height: 1.7;
+  text-shadow: 0 0 20px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,1);
 }
 
 .cat-tagline span {
   font-size: 0.9rem;
-  color: rgba(240, 234, 214, 0.3);
+  color: rgba(240, 234, 214, 0.6);
+  text-shadow: 0 0 20px rgba(0,0,0,0.9), 0 2px 8px rgba(0,0,0,1);
 }
 
 /* ── ÓRBITA RESPIRANTE ── */
@@ -361,6 +364,51 @@ body:has(.video-bg) .nav {
   text-align: center;
   padding: 3rem 0;
   line-height: 1.8;
+}
+
+/* ── IDENTIDAD POR CATEGORÍA ── */
+
+/* Filosofía — púrpura */
+.cat-filosofia .cat-titulo {
+  color: #F0EAD6;
+  text-shadow: 0 0 40px rgba(139,111,190,0.4), 0 2px 8px rgba(0,0,0,0.9);
+}
+.cat-filosofia .cat-kicker { color: rgba(196,168,232,0.8); }
+.cat-filosofia .ens-row-num { color: rgba(196,168,232,0.5); }
+.cat-filosofia .ens-row:hover { border-color: rgba(139,111,190,0.5); }
+
+/* Metafísica — cian */
+.cat-metafisica .cat-titulo {
+  color: #E0F7FA;
+  text-shadow: 0 0 40px rgba(34,211,238,0.4), 0 2px 8px rgba(0,0,0,0.9);
+}
+.cat-metafisica .cat-kicker { color: rgba(34,211,238,0.8); }
+.cat-metafisica .cat-tagline { color: rgba(224,247,250,0.85); }
+.cat-metafisica .ens-row-num { color: rgba(34,211,238,0.5); }
+.cat-metafisica .ens-row:hover { border-color: rgba(34,211,238,0.5); }
+.cat-metafisica .cat-ensayos-label { color: rgba(34,211,238,0.7); }
+
+/* Teología — dorado */
+.cat-teologia .cat-titulo {
+  color: #FFF8E1;
+  text-shadow: 0 0 40px rgba(232,160,32,0.5), 0 2px 8px rgba(0,0,0,0.9);
+}
+.cat-teologia .cat-kicker { color: rgba(232,160,32,0.9); }
+.cat-teologia .cat-tagline { color: rgba(255,248,225,0.85); }
+.cat-teologia .ens-row-num { color: rgba(232,160,32,0.5); }
+.cat-teologia .ens-row:hover { border-color: rgba(232,160,32,0.5); }
+.cat-teologia .cat-ensayos-label { color: rgba(232,160,32,0.7); }
+
+/* Cosmología — rojo nebulosa */
+.cat-cosmologia .cat-titulo {
+  color: #FFF0F0;
+  text-shadow: 0 0 40px rgba(248,113,113,0.4), 0 2px 8px rgba(0,0,0,0.9);
+}
+.cat-cosmologia .cat-kicker { color: rgba(248,113,113,0.8); }
+.cat-cosmologia .cat-tagline { color: rgba(255,240,240,0.85); }
+.cat-cosmologia .ens-row-num { color: rgba(248,113,113,0.5); }
+.cat-cosmologia .ens-row:hover { border-color: rgba(248,113,113,0.5); }
+.cat-cosmologia .cat-ensayos-label { color: rgba(248,113,113,0.7); 
 }
 
 }
