@@ -1,0 +1,192 @@
+/* ============================================
+   EL LUGAR OLVIDADO — Ensayos
+   Diseño editorial de lectura profunda
+   ============================================ */
+
+/* ── CABECERA ── */
+.ensayo-header {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 6rem 2rem 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.ensayo-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.ensayo-categoria {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.ensayo-separador {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.ensayo-fecha {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+}
+
+.ensayo-titulo {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: normal;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+}
+
+.ensayo-subtitulo {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.ensayo-autor {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ensayo-autor-nombre {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.ensayo-autor-rol {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ── CUERPO ── */
+.ensayo-body {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+.ensayo-intro {
+  font-family: var(--font-serif);
+  font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+  color: var(--text-primary);
+  line-height: 1.5;
+  margin-bottom: 2rem;
+}
+
+.ensayo-body p {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  line-height: 1.95;
+  margin-bottom: 1.75rem;
+}
+
+/* ── CITAS ── */
+.ensayo-cita {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--accent-light);
+  border-left: 2px solid var(--accent);
+  padding: 0.5rem 0 0.5rem 1.5rem;
+  margin: 2.5rem 0;
+  line-height: 1.7;
+}
+
+.ensayo-cita-grande {
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  border-left: none;
+  padding-left: 0;
+  text-align: center;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin: 3rem auto;
+  max-width: 500px;
+}
+
+/* ── SEPARADOR VISUAL ── */
+.ensayo-separador-visual {
+  width: 32px;
+  height: 1px;
+  background: var(--accent);
+  margin: 2.5rem 0;
+  opacity: 0.6;
+}
+
+/* ── CIERRE ── */
+.ensayo-cierre {
+  font-family: var(--font-serif) !important;
+  font-size: 1.2rem !important;
+  color: var(--text-primary) !important;
+  font-style: italic;
+  margin-top: 2.5rem !important;
+}
+
+/* ── DEBATE CTA ── */
+.debate-cta {
+  border-top: 1px solid var(--border);
+  padding: 5rem 0;
+  text-align: center;
+}
+
+.debate-pregunta {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  font-weight: normal;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.debate-sub {
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 2rem;
+}
+
+.debate-btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border: 1px solid var(--accent);
+  border-radius: 2rem;
+  color: var(--accent-light);
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.debate-btn:hover {
+  background: var(--accent);
+  color: var(--bg-deep);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  .ensayo-header {
+    padding: 4rem 1.25rem 2.5rem;
+  }
+
+  .ensayo-body {
+    padding: 2.5rem 1.25rem 4rem;
+  }
+
+  .ensayo-cita-grande {
+    font-size: 1.2rem;
+    text-align: left;
+  }
+
+  .debate-cta {
+    padding: 3rem

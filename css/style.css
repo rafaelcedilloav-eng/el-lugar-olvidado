@@ -395,4 +395,22 @@ a:hover {
   .footer {
     padding: 2rem 0;
   }
+
+  .hero-primer-ensayo {
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+}
+
+.hero-primer-ensayo a {
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1px;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.hero-primer-ensayo a:hover {
+  color: var(--accent-light);
+  border-color: var(--accent);
+}
+
 }
