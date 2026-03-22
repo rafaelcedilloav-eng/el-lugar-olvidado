@@ -57,5 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .classList.remove('nav-menu-open');
     });
   });
+// ── Activar filtro desde URL si viene de una categoría
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('cat');
+  if (cat) {
+    const btn = document.querySelector(`[data-filtro="${cat}"]`);
+    if (btn) btn.click();
+  }
 
 });

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ensayos y debates — El Lugar Olvidado.">
+  <meta name="author" content="Rafael Cedillo">
+
+  <!-- Seguridad -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <title>Explorar — El Lugar Olvidado</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/ensayos.css">
+</head>
+
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <nav class="nav" id="main-nav">
+    <a href="index.html" class="nav-logo">El Lugar Olvidado</a>
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="ensayos.html" class="nav-active">Explorar</a>
+      <a href="#">Debates</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="autor.html">Sobre el autor</a>
+    </div>
+  </nav>
+
+  <!-- CABECERA -->
+  <header class="biblioteca-header">
+    <p class="biblioteca-kicker">Archivo vivo</p>
+    <h1 class="biblioteca-titulo">Ensayos</h1>
+    <p class="biblioteca-sub">Pensamiento en construcción. Preguntas sin última palabra.</p>
+  </header>
+
+  <!-- FILTROS -->
+  <div class="filtros-wrap">
+    <div class="filtros">
+      <button class="filtro-btn active" data-filtro="todos">Todos</button>
+      <button class="filtro-btn" data-filtro="filosofia">Filosofía</button>
+      <button class="filtro-btn" data-filtro="metafisica">Metafísica</button>
+      <button class="filtro-btn" data-filtro="teologia">Teología</button>
+      <button class="filtro-btn" data-filtro="cosmologia">Cosmología</button>
+    </div>
+  </div>
+
+  <!-- GRID DE ENSAYOS -->
+  <main class="biblioteca-grid" id="ensayos-grid">
+
+    <article class="ensayo-card" data-categoria="filosofia">
+      <a href="ensayos/el-libre-albedrio.html" class="ensayo-card-link">
+        <div class="ensayo-card-cat">Filosofía</div>
+        <h2 class="ensayo-card-titulo">El Libre Albedrío No Es Libertad — Es un Costo</h2>
+        <p class="ensayo-card-extracto">Cuatro culturas definen la libertad de cuatro formas distintas. Ninguna te dice la verdad completa. La libertad, en su forma más común, no es emancipación — es el nombre elegante que le damos a nuestra jaula favorita.</p>
+        <div class="ensayo-card-footer">
+          <span class="ensayo-card-fecha">Marzo 2026</span>
+          <span class="ensayo-card-leer">Leer ensayo →</span>
+        </div>
+      </a>
+    </article>
+
+    <article class="ensayo-card" data-categoria="filosofia">
+      <a href="ensayos/la-moral-que-nadie-eligio.html" class="ensayo-card-link">
+        <div class="ensayo-card-cat">Filosofía moral</div>
+        <h2 class="ensayo-card-titulo">La Moral que Nadie Eligió</h2>
+        <p class="ensayo-card-extracto">¿En qué momento decidimos que necesitábamos ser guiados por reglas que nunca elegimos? La moral no nació para protegerte. Nació para controlarte.</p>
+        <div class="ensayo-card-footer">
+          <span class="ensayo-card-fecha">Marzo 2026</span>
+          <span class="ensayo-card-leer">Leer ensayo →</span>
+        </div>
+      </a>
+    </article>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-name">El Lugar Olvidado</p>
+      <p class="footer-sub">Donde las preguntas importan más que las respuestas.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Filtros de categoría
+    const botones = document.querySelectorAll('.filtro-btn');
+    const cards = document.querySelectorAll('.ensayo-card');
+
+    botones.forEach(btn => {
+      btn.addEventListener('click', () => {
+        botones.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filtro = btn.getAttribute('data-filtro');
+
+        cards.forEach(card => {
+          if (filtro === 'todos' || card.getAttribute('data-categoria') === filtro) {
+            card.style.display = 'block';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
