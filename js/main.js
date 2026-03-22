@@ -64,5 +64,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const btn = document.querySelector(`[data-filtro="${cat}"]`);
     if (btn) btn.click();
   }
+  
+// ── Órbita sigue el scroll — siempre centrada
+  const orbita = document.getElementById('orbita');
+  if (orbita) {
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const centerY = window.innerHeight / 2;
+      orbita.style.top = (centerY + scrollY) + 'px';
+      orbita.style.transform = 'translate(-50%, -50%)';
+    });
+  }
 
 });
