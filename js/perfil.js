@@ -1,18 +1,52 @@
 // ── Perfil — El Lugar Olvidado
 
 const NIVELES = [
-  { nivel: 1, nombre: 'El Curioso', icono: '🕯️', desc: '"Toda búsqueda comienza con una pregunta"' },
-  { nivel: 2, nombre: 'El Pensador', icono: '📖', desc: '"Pensar en voz alta es el primer acto de valentía"' },
-  { nivel: 3, nombre: 'El Debatiente', icono: '⚡', desc: '"Las ideas que generan fricción son las que cambian mentes"' },
-  { nivel: 4, nombre: 'El Filósofo', icono: '🏛️', desc: '"No busca respuestas — construye mejores preguntas"' },
-  { nivel: 5, nombre: 'El Guardián', icono: '🔥', desc: '"El conocimiento que no se comparte se extingue"' },
-  { nivel: 6, nombre: 'El Mensajero', icono: '🪶', desc: '"Abre las puertas del lugar a quienes aún no saben que lo buscan"' },
-  { nivel: 7, nombre: 'El Alquimista', icono: '⚗️', desc: '"Transforma ideas en algo que el mundo no había visto"' },
-  { nivel: 8, nombre: 'El Oráculo', icono: '🌀', desc: '"Sus palabras abren puertas que otros no ven"' },
-  { nivel: 9, nombre: 'Voz del Lugar', icono: '👁️', desc: '"Elegido por el fundador como voz esencial del foro"' },
-  { nivel: 10, nombre: 'El Fundador', icono: '🜂', desc: '"Creó el lugar donde las preguntas importan más que las respuestas"' }
+  { nivel: 0,  nombre: 'El Bufón',      icono: '🎭', desc: '"Creyó que el camino se podía saltar. El lugar tiene memoria."' },
+  { nivel: 1,  nombre: 'El Curioso',    icono: '🕯️', desc: '"Toda búsqueda comienza con una pregunta"' },
+  { nivel: 2,  nombre: 'El Pensador',   icono: '📖', desc: '"Pensar en voz alta es el primer acto de valentía"' },
+  { nivel: 3,  nombre: 'El Debatiente', icono: '⚡', desc: '"Las ideas que generan fricción son las que cambian mentes"' },
+  { nivel: 4,  nombre: 'El Filósofo',   icono: '🏛️', desc: '"No busca respuestas — construye mejores preguntas"' },
+  { nivel: 5,  nombre: 'El Guardián',   icono: '🔥', desc: '"El conocimiento que no se comparte se extingue"' },
+  { nivel: 6,  nombre: 'El Mensajero',  icono: '🪶', desc: '"Abre las puertas del lugar a quienes aún no saben que lo buscan"' },
+  { nivel: 7,  nombre: 'El Alquimista', icono: '⚗️', desc: '"Transforma ideas en algo que el mundo no había visto"' },
+  { nivel: 8,  nombre: 'El Oráculo',    icono: '🌀', desc: '"Sus palabras abren puertas que otros no ven"' },
+  { nivel: 9,  nombre: 'Voz del Lugar', icono: '👁️', desc: '"Elegido por el fundador como voz esencial del foro"' },
+  { nivel: 10, nombre: 'El Fundador',   icono: '🜂', desc: '"Creó el lugar donde las preguntas importan más que las respuestas"' }
 ];
 
+const EDGE_URL = 'https://vvexfxjizczurnmubqxo.supabase.co/functions/v1/subir-nivel';
+
+// ── SUBIR NIVEL VÍA EDGE FUNCTION ─────────────────────────────────────────────
+async function solicitarSubidaNivel(nivelSolicitado) {
+  const db = window.__ELO.getClient();
+  const { data: { session } } = await db.auth.getSession();
+  if (!session) return;
+
+  try {
+    const res = await fetch(EDGE_URL, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${session.access_token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ nivel_solicitado: nivelSolicitado })
+    });
+
+    const data = await res.json();
+
+    if (data.resultado === 'subida') {
+      window.mostrarInsignia(data.nivel_nuevo);
+    } else if (data.resultado === 'bufon') {
+      window.mostrarInsignia(0);
+    }
+    // 'pendiente' — no hacer nada, el usuario aún no cumple requisitos
+
+  } catch (err) {
+    console.error('Error al solicitar subida de nivel:', err);
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
 async function initPerfil() {
   const db = window.__ELO.getClient();
   const { data: { user } } = await db.auth.getUser();
@@ -60,9 +94,10 @@ async function initPerfil() {
   cargarReferidos(user.id, profile);
 }
 
+// ── RENDER ────────────────────────────────────────────────────────────────────
 function renderPerfil(user, profile) {
-  const nivel = profile?.nivel || 1;
-  const nivelData = NIVELES[nivel - 1];
+  const nivel = profile?.nivel ?? 1;
+  const nivelData = NIVELES[nivel] || NIVELES[1];
 
   if (nivel === 1 && !localStorage.getItem('insignia_1_mostrada')) {
     setTimeout(() => window.mostrarInsignia(1), 1500);
@@ -80,11 +115,11 @@ function renderPerfil(user, profile) {
   document.getElementById('perfil-nivel-nombre').textContent = nivelData.nombre;
   document.getElementById('perfil-nivel-desc').textContent = nivelData.desc;
   document.getElementById('perfil-nivel-icono').textContent = nivelData.icono;
-  document.getElementById('stat-nivel').textContent = nivel;
+  document.getElementById('stat-nivel').textContent = nivel === 0 ? '🎭' : nivel;
 
   document.querySelectorAll('.insignia').forEach(el => {
     const nivelInsignia = parseInt(el.dataset.nivel);
-    if (nivelInsignia <= nivel) {
+    if (nivelInsignia <= nivel && nivel > 0) {
       el.classList.remove('bloqueada');
       el.classList.add('activa');
     }
@@ -94,6 +129,7 @@ function renderPerfil(user, profile) {
   document.getElementById('referido-link').value = refLink;
 }
 
+// ── REFERIDOS ─────────────────────────────────────────────────────────────────
 async function cargarReferidos(userId, profile) {
   const db = window.__ELO.getClient();
 
@@ -105,11 +141,14 @@ async function cargarReferidos(userId, profile) {
   const total = referidos?.length || 0;
   document.getElementById('stat-referidos').textContent = total;
 
-  if (total >= 10 && profile?.nivel < 6) {
-    window.mostrarInsignia(6);
+  // Verificar subida de nivel vía Edge Function
+  if (profile?.nivel > 0 && profile?.nivel < 9) {
+    const nivelSiguiente = profile.nivel + 1;
+    await solicitarSubidaNivel(nivelSiguiente);
   }
 }
 
+// ── NOTIFICACIONES ────────────────────────────────────────────────────────────
 async function cargarNotificaciones(userId) {
   const db = window.__ELO.getClient();
 

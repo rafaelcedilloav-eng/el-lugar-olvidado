@@ -22,6 +22,10 @@
   background: rgba(4, 2, 8, 0.97);
 }
 
+.insignia-overlay-bufon.visible {
+  background: rgba(6, 6, 8, 0.88);
+}
+
 /* ── MODAL BASE ── */
 .insignia-modal {
   position: relative;
@@ -97,10 +101,10 @@
 }
 
 @keyframes particulaRayo {
-  0%   { opacity: 0; transform: rotate(0deg) scaleX(0); }
-  20%  { opacity: 1; transform: rotate(0deg) scaleX(1); }
+  0%   { opacity: 0; transform: scaleX(0); }
+  20%  { opacity: 1; transform: scaleX(1); }
   50%  { opacity: 0.6; }
-  100% { opacity: 0; transform: rotate(0deg) scaleX(0.2); }
+  100% { opacity: 0; transform: scaleX(0.2); }
 }
 
 @keyframes particulaFlotar {
@@ -124,13 +128,13 @@
 }
 
 @keyframes particulaBrasa {
-  0%   { top: -10px; opacity: 0; transform: translateX(0) scale(1); }
-  10%  { opacity: 1; }
-  80%  { opacity: 0.6; }
-  100% { top: 110%; opacity: 0; transform: translateX(var(--drift, 20px)) scale(0.2); }
+  0%   { top: -10px; opacity: 0; transform: translateX(0) scale(1) rotate(0deg); }
+  10%  { opacity: 0.7; }
+  80%  { opacity: 0.4; }
+  100% { top: 110%; opacity: 0; transform: translateX(var(--drift, 20px)) scale(0.2) rotate(180deg); }
 }
 
-/* ── CONTENIDO ── */
+/* ── CONTENIDO BASE ── */
 .insignia-modal-contenido {
   position: relative;
   z-index: 2;
@@ -267,10 +271,7 @@
 .insignia-modal-flotar  { box-shadow: 0 0 40px rgba(226,232,240,0.10); }
 .insignia-modal-alquimia{ box-shadow: 0 0 60px rgba(52,211,153,0.15); }
 .insignia-modal-ojo     { box-shadow: 0 0 80px rgba(232,160,32,0.20); }
-
-.insignia-modal-llamas {
-  box-shadow: 0 0 70px rgba(251,146,60,0.2), 0 0 120px rgba(251,146,60,0.08);
-}
+.insignia-modal-llamas  { box-shadow: 0 0 70px rgba(251,146,60,0.2), 0 0 120px rgba(251,146,60,0.08); }
 
 .insignia-modal-electrico {
   box-shadow: 0 0 60px rgba(96,165,250,0.2);
@@ -284,8 +285,137 @@
   75%     { transform: translateY(1px) translateX(-0.5px); }
 }
 
-.insignia-modal-espiral {
-  box-shadow: 0 0 80px rgba(167,139,250,0.2);
+.insignia-modal-espiral { box-shadow: 0 0 80px rgba(167,139,250,0.2); }
+
+/* ── EL BUFÓN ── */
+.insignia-modal-bufon {
+  background: rgba(15, 15, 18, 0.97);
+  border: 1px solid rgba(107, 114, 128, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(107,114,128,0.1);
+  animation: bufonEntrada 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.insignia-overlay-bufon.visible .insignia-modal-bufon {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Trompetas en los lados */
+.insignia-bufon-trompeta {
+  position: absolute;
+  font-size: 2.5rem;
+  top: 1.5rem;
+  z-index: 3;
+  animation: trompetaTocar 0.4s ease-in-out infinite alternate;
+  filter: grayscale(0.5) opacity(0.7);
+}
+
+.insignia-bufon-trompeta.izquierda {
+  left: 1rem;
+  transform: scaleX(-1) rotate(-20deg);
+  animation-delay: 0s;
+}
+
+.insignia-bufon-trompeta.derecha {
+  right: 1rem;
+  transform: rotate(20deg);
+  animation-delay: 0.2s;
+}
+
+@keyframes trompetaTocar {
+  0%   { transform: scaleX(-1) rotate(-20deg) translateY(0); }
+  100% { transform: scaleX(-1) rotate(-15deg) translateY(-4px); }
+}
+
+.insignia-bufon-trompeta.derecha {
+  animation-name: trompetaTocarDerecha;
+}
+
+@keyframes trompetaTocarDerecha {
+  0%   { transform: rotate(20deg) translateY(0); }
+  100% { transform: rotate(15deg) translateY(-4px); }
+}
+
+.insignia-bufon-kicker {
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: rgba(107, 114, 128, 0.6);
+  text-transform: uppercase;
+  font-family: system-ui;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.insignia-bufon-icono {
+  font-size: 3rem;
+  animation: bufonIcono 0.6s ease forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+  filter: grayscale(0.3);
+}
+
+@keyframes bufonIcono {
+  0%   { opacity: 0; transform: scale(0) rotate(15deg); }
+  60%  { transform: scale(1.1) rotate(-5deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.insignia-bufon-nombre {
+  color: #6B7280;
+  font-size: 1.9rem;
+  font-family: var(--font-serif, 'IM Fell English', Georgia, serif);
+  font-weight: normal;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.insignia-bufon-desc {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: 0.88rem;
+  font-style: italic;
+  color: rgba(107, 114, 128, 0.6);
+  line-height: 1.6;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 0.65s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.insignia-bufon-frase {
+  font-size: 0.72rem;
+  color: rgba(107, 114, 128, 0.35);
+  font-style: italic;
+  letter-spacing: 0.05em;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 0.85s;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.insignia-bufon-btn {
+  margin-top: 0.5rem;
+  padding: 10px 28px;
+  background: transparent;
+  border: 1px solid rgba(107, 114, 128, 0.25);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: var(--font-serif, Georgia, serif);
+  color: rgba(107, 114, 128, 0.6);
+  transition: all 0.2s;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 1s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.insignia-bufon-btn:hover {
+  background: rgba(107, 114, 128, 0.05);
+  color: rgba(107, 114, 128, 0.9);
 }
 
 /* ── EL FUNDADOR ── */
@@ -483,4 +613,5 @@
   .insignia-modal-nombre { font-size: 1.4rem; }
   .insignia-modal-fundador { padding: 2.5rem 1.75rem; }
   .insignia-fundador-nombre { font-size: 1.7rem; }
+  .insignia-bufon-trompeta { font-size: 1.8rem; }
 }

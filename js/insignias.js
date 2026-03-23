@@ -3,6 +3,7 @@
   'use strict';
 
   const INSIGNIAS_CONFIG = {
+    0:  { nombre: 'El Bufón',       icono: '🎭', desc: 'Creyó que el camino se podía saltar. El lugar tiene memoria.',          color: '#6B7280', colorSecundario: '#374151', particulas: 'bufon',       animacion: 'bufon'    },
     1:  { nombre: 'El Curioso',     icono: '🕯️', desc: 'Toda búsqueda comienza con una pregunta',                              color: '#F5E6C8', colorSecundario: '#C8A96E', particulas: 'luz',         animacion: 'vela'     },
     2:  { nombre: 'El Pensador',    icono: '📖', desc: 'Pensar en voz alta es el primer acto de valentía',                     color: '#E8D5A3', colorSecundario: '#B8964E', particulas: 'paginas',     animacion: 'libro'    },
     3:  { nombre: 'El Debatiente',  icono: '⚡', desc: 'Las ideas que generan fricción son las que cambian mentes',            color: '#60A5FA', colorSecundario: '#1D4ED8', particulas: 'rayos',       animacion: 'electrico'},
@@ -27,6 +28,7 @@
     if (tipo === 'burbujas')     return generarParticulasBurbujas(config);
     if (tipo === 'luz')          return generarParticulasLuz(config);
     if (tipo === 'dorado')       return generarParticulasDorado(config);
+    if (tipo === 'bufon')        return generarParticulasBufon(config);
     return generarParticulasDefault(config);
   }
 
@@ -35,6 +37,18 @@
     for (let i = 0; i < 18; i++) {
       const x = Math.random() * 100, delay = Math.random() * 3, dur = 2.5 + Math.random() * 2.5, size = 3 + Math.random() * 5;
       html += `<div class="particula" style="left:${x}%;width:${size}px;height:${size}px;background:${config.color};border-radius:50%;box-shadow:0 0 ${size*2}px ${config.color};animation:particulaSubir ${dur}s ${delay}s linear infinite;"></div>`;
+    }
+    return html + '</div>';
+  }
+
+  function generarParticulasBufon(config) {
+    // Dos trompetas estáticas en cada lado + confeti gris apagado cayendo
+    let html = '<div class="insignia-particulas">';
+    // Confeti triste — pequeños cuadrados grises que caen
+    for (let i = 0; i < 20; i++) {
+      const x = Math.random() * 100, delay = Math.random() * 3, dur = 2 + Math.random() * 2, size = 3 + Math.random() * 5;
+      const rot = Math.random() * 360;
+      html += `<div class="particula particula-confeti" style="left:${x}%;width:${size}px;height:${size}px;background:${i % 3 === 0 ? '#9CA3AF' : i % 3 === 1 ? '#6B7280' : '#4B5563'};border-radius:1px;transform:rotate(${rot}deg);animation:particulaBrasa ${dur}s ${delay}s ease-in infinite;opacity:0.6;"></div>`;
     }
     return html + '</div>';
   }
@@ -119,19 +133,42 @@
 
   function mostrarInsignia(nivel) {
     const config = INSIGNIAS_CONFIG[nivel];
-    if (!config) return;
+    if (config === undefined) return;
 
     const prev = document.getElementById('insignia-overlay');
     if (prev) prev.remove();
 
     const esFundador = nivel === 10;
+    const esBufon = nivel === 0;
+
     const overlay = document.createElement('div');
-    overlay.className = 'insignia-overlay' + (esFundador ? ' insignia-overlay-fundador' : '');
+    overlay.className = 'insignia-overlay' +
+      (esFundador ? ' insignia-overlay-fundador' : '') +
+      (esBufon ? ' insignia-overlay-bufon' : '');
     overlay.id = 'insignia-overlay';
 
     const particulas = generarParticulas(config);
 
-    if (esFundador) {
+    if (esBufon) {
+      overlay.innerHTML = `
+        <div class="insignia-modal insignia-modal-bufon">
+          ${particulas}
+          <div class="insignia-bufon-trompeta izquierda">📯</div>
+          <div class="insignia-bufon-trompeta derecha">📯</div>
+          <div class="insignia-modal-contenido">
+            <p class="insignia-modal-kicker insignia-bufon-kicker">— Logro especial conseguido —</p>
+            <div class="insignia-modal-icono-wrap">
+              <span class="insignia-modal-icono insignia-bufon-icono">${config.icono}</span>
+            </div>
+            <h2 class="insignia-modal-nombre insignia-bufon-nombre">${config.nombre}</h2>
+            <p class="insignia-modal-desc insignia-bufon-desc">${config.desc}</p>
+            <div class="insignia-modal-linea" style="background:linear-gradient(90deg,transparent,${config.color},transparent)"></div>
+            <p class="insignia-bufon-frase">"Esta distinción es permanente"</p>
+            <button class="insignia-modal-btn insignia-bufon-btn" onclick="cerrarInsignia()">Qué pena</button>
+          </div>
+        </div>
+      `;
+    } else if (esFundador) {
       overlay.innerHTML = `
         <div class="insignia-modal insignia-modal-fundador">
           <div class="insignia-fundador-bg"></div>
@@ -182,7 +219,7 @@
 
     document.body.appendChild(overlay);
     requestAnimationFrame(() => requestAnimationFrame(() => overlay.classList.add('visible')));
-    setTimeout(() => cerrarInsignia(), esFundador ? 12000 : 8000);
+    setTimeout(() => cerrarInsignia(), esFundador ? 12000 : esBufon ? 10000 : 8000);
   }
 
   function cerrarInsignia() {
@@ -193,7 +230,6 @@
     }
   }
 
-  // Solo exponemos las funciones de UI — no el cliente de Supabase
   window.mostrarInsignia = mostrarInsignia;
   window.cerrarInsignia = cerrarInsignia;
 
