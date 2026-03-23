@@ -14,25 +14,25 @@ const NIVELES = [
 ];
 
 async function initPerfil() {
-  const { data: { user } } = await _supabase.auth.getUser();
+  const db = window.__ELO.getClient();
+  const { data: { user } } = await db.auth.getUser();
+
   if (!user) {
     window.location.href = '/el-lugar-olvidado/login.html';
     return;
   }
 
-  // Cargar o crear perfil
-  let { data: profile } = await _supabase
+  let { data: profile } = await db
     .from('profiles')
     .select('*')
     .eq('id', user.id)
     .single();
 
   if (!profile) {
-    // Verificar si llegó con referido
     const urlParams = new URLSearchParams(window.location.search);
     const refId = urlParams.get('ref') || localStorage.getItem('ref_id');
 
-    const { data: newProfile } = await _supabase
+    const { data: newProfile } = await db
       .from('profiles')
       .insert({
         id: user.id,
@@ -44,9 +44,8 @@ async function initPerfil() {
       .select()
       .single();
 
-    // Registrar referido si existe
     if (refId) {
-      await _supabase.from('referidos').insert({
+      await db.from('referidos').insert({
         referidor_id: refId,
         referido_id: user.id
       });
@@ -56,7 +55,6 @@ async function initPerfil() {
     profile = newProfile;
   }
 
-  // Renderizar perfil
   renderPerfil(user, profile);
   cargarNotificaciones(user.id);
   cargarReferidos(user.id, profile);
@@ -66,19 +64,17 @@ function renderPerfil(user, profile) {
   const nivel = profile?.nivel || 1;
   const nivelData = NIVELES[nivel - 1];
 
-  // Mostrar insignia nivel 1 si es nuevo usuario
   if (nivel === 1 && !localStorage.getItem('insignia_1_mostrada')) {
-    setTimeout(() => mostrarInsignia(1), 1500);
+    setTimeout(() => window.mostrarInsignia(1), 1500);
     localStorage.setItem('insignia_1_mostrada', 'true');
   }
 
-  // Avatar
   const avatar = document.getElementById('perfil-avatar');
   if (avatar) {
-    avatar.src = user.user_metadata?.avatar_url || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.user_metadata?.full_name || 'U') + '&background=2D1F3D&color=C4A8E8';
+    avatar.src = user.user_metadata?.avatar_url ||
+      'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.user_metadata?.full_name || 'U') + '&background=2D1F3D&color=C4A8E8';
   }
 
-  // Info
   document.getElementById('perfil-nombre').textContent = user.user_metadata?.full_name || user.email;
   document.getElementById('perfil-email').textContent = user.email;
   document.getElementById('perfil-nivel-nombre').textContent = nivelData.nombre;
@@ -86,7 +82,6 @@ function renderPerfil(user, profile) {
   document.getElementById('perfil-nivel-icono').textContent = nivelData.icono;
   document.getElementById('stat-nivel').textContent = nivel;
 
-  // Insignias activas
   document.querySelectorAll('.insignia').forEach(el => {
     const nivelInsignia = parseInt(el.dataset.nivel);
     if (nivelInsignia <= nivel) {
@@ -95,13 +90,14 @@ function renderPerfil(user, profile) {
     }
   });
 
-  // Link de referido
   const refLink = `https://rafaelcedilloav-eng.github.io/el-lugar-olvidado/login.html?ref=${user.id}`;
   document.getElementById('referido-link').value = refLink;
 }
 
 async function cargarReferidos(userId, profile) {
-  const { data: referidos } = await _supabase
+  const db = window.__ELO.getClient();
+
+  const { data: referidos } = await db
     .from('referidos')
     .select('*')
     .eq('referidor_id', userId);
@@ -109,28 +105,15 @@ async function cargarReferidos(userId, profile) {
   const total = referidos?.length || 0;
   document.getElementById('stat-referidos').textContent = total;
 
-  // Verificar si sube a nivel 6
   if (total >= 10 && profile?.nivel < 6) {
-    await _supabase
-      .from('profiles')
-      .update({ nivel: 6 })
-      .eq('id', userId);
-
-    // Crear notificación de subida de nivel
-    await _supabase.from('notificaciones').insert({
-      user_id: userId,
-      tipo: 'nivel',
-      mensaje: '🔥 ¡Alcanzaste el nivel Guardián! Has invitado a 10 personas al foro.',
-      leida: false
-    });
-
-    // ← FIX: mostrarInsignia va FUERA del objeto insert, no dentro
-    mostrarInsignia(6);
+    window.mostrarInsignia(6);
   }
 }
 
 async function cargarNotificaciones(userId) {
-  const { data: notifs } = await _supabase
+  const db = window.__ELO.getClient();
+
+  const { data: notifs } = await db
     .from('notificaciones')
     .select('*')
     .eq('user_id', userId)
@@ -156,25 +139,19 @@ async function cargarNotificaciones(userId) {
     </div>
   `).join('');
 
-  // Suscripción realtime a nuevas notificaciones
-  _supabase
-    .channel('notificaciones')
+  db.channel('notificaciones')
     .on('postgres_changes', {
       event: 'INSERT',
       schema: 'public',
       table: 'notificaciones',
       filter: `user_id=eq.${userId}`
-    }, payload => {
-      cargarNotificaciones(userId);
-    })
+    }, () => cargarNotificaciones(userId))
     .subscribe();
 }
 
 async function marcarLeida(id, el) {
-  await _supabase
-    .from('notificaciones')
-    .update({ leida: true })
-    .eq('id', id);
+  const db = window.__ELO.getClient();
+  await db.from('notificaciones').update({ leida: true }).eq('id', id);
   el.classList.remove('no-leida');
 }
 
@@ -186,10 +163,8 @@ function copiarLink() {
   setTimeout(() => msg.classList.remove('visible'), 2000);
 }
 
-// Guardar ref en localStorage si llega en la URL
 const urlParams = new URLSearchParams(window.location.search);
 const refId = urlParams.get('ref');
 if (refId) localStorage.setItem('ref_id', refId);
 
-// Iniciar
 document.addEventListener('DOMContentLoaded', initPerfil);
