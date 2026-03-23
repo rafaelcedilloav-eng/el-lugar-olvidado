@@ -1,0 +1,340 @@
+/* ── PERFIL — El Lugar Olvidado ── */
+.perfil-main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 6rem 2rem 4rem;
+}
+
+/* ── HERO ── */
+.perfil-hero {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem 0 3rem;
+  border-bottom: 1px solid rgba(139, 111, 190, 0.12);
+  margin-bottom: 3rem;
+}
+
+.perfil-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.perfil-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  border: 2px solid rgba(139, 111, 190, 0.3);
+  object-fit: cover;
+  background: rgba(45, 31, 61, 0.4);
+}
+
+.perfil-nivel-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #1A1020;
+  border: 1px solid rgba(139, 111, 190, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
+.perfil-nombre {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: normal;
+  color: #F0EAD6;
+  margin-bottom: 0.25rem;
+}
+
+.perfil-email {
+  font-size: 0.8rem;
+  color: rgba(240, 234, 214, 0.35);
+  margin-bottom: 0.75rem;
+}
+
+.perfil-nivel-nombre {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: rgba(196, 168, 232, 0.8);
+  margin-bottom: 0.25rem;
+}
+
+.perfil-nivel-desc {
+  font-family: var(--font-serif);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: rgba(240, 234, 214, 0.3);
+}
+
+/* ── STATS ── */
+.perfil-stats {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(139, 111, 190, 0.08);
+}
+
+.perfil-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.perfil-stat-num {
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  color: #C4A8E8;
+  line-height: 1;
+}
+
+.perfil-stat-label {
+  font-size: 0.72rem;
+  color: rgba(240, 234, 214, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ── SECCIONES ── */
+.perfil-section-titulo {
+  font-family: var(--font-serif);
+  font-size: 1.1rem;
+  font-weight: normal;
+  color: #F0EAD6;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── REFERIDO ── */
+.perfil-referido {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(139, 111, 190, 0.08);
+}
+
+.perfil-referido-desc {
+  font-size: 0.85rem;
+  color: rgba(240, 234, 214, 0.45);
+  font-style: italic;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.perfil-referido-link {
+  display: flex;
+  gap: 8px;
+}
+
+.perfil-referido-input {
+  flex: 1;
+  background: rgba(45, 31, 61, 0.3);
+  border: 1px solid rgba(139, 111, 190, 0.2);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: rgba(240, 234, 214, 0.7);
+  font-size: 0.8rem;
+  font-family: monospace;
+}
+
+.perfil-referido-btn {
+  background: rgba(139, 111, 190, 0.2);
+  border: 1px solid rgba(139, 111, 190, 0.3);
+  border-radius: 6px;
+  padding: 10px 20px;
+  color: #C4A8E8;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.perfil-referido-btn:hover {
+  background: rgba(139, 111, 190, 0.35);
+}
+
+.perfil-referido-copiado {
+  font-size: 0.75rem;
+  color: rgba(139, 111, 190, 0.7);
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.perfil-referido-copiado.visible {
+  opacity: 1;
+}
+
+/* ── INSIGNIAS ── */
+.perfil-insignias {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(139, 111, 190, 0.08);
+}
+
+.insignias-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.insignia {
+  background: rgba(45, 31, 61, 0.3);
+  border: 1px solid rgba(139, 111, 190, 0.15);
+  border-radius: 10px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.insignia.activa {
+  border-color: rgba(139, 111, 190, 0.4);
+  background: rgba(139, 111, 190, 0.1);
+  box-shadow: 0 0 20px rgba(139, 111, 190, 0.1);
+}
+
+.insignia.bloqueada {
+  opacity: 0.35;
+  filter: grayscale(0.5);
+}
+
+.insignia.especial.activa {
+  border-color: rgba(232, 160, 32, 0.5);
+  background: rgba(232, 160, 32, 0.08);
+  box-shadow: 0 0 20px rgba(232, 160, 32, 0.1);
+}
+
+.insignia-icono {
+  font-size: 1.8rem;
+}
+
+.insignia-nombre {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: #F0EAD6;
+}
+
+.insignia-desc {
+  font-size: 0.72rem;
+  color: rgba(240, 234, 214, 0.4);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* ── NOTIFICACIONES ── */
+.notif-badge {
+  background: rgba(139, 111, 190, 0.7);
+  color: #F0EAD6;
+  font-size: 0.65rem;
+  padding: 2px 7px;
+  border-radius: 10px;
+  font-family: system-ui;
+}
+
+.notif-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid rgba(139, 111, 190, 0.06);
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.notif-item.no-leida {
+  padding-left: 8px;
+  border-left: 2px solid rgba(139, 111, 190, 0.4);
+}
+
+.notif-icono {
+  font-size: 1rem;
+  padding-top: 2px;
+}
+
+.notif-mensaje {
+  font-size: 0.85rem;
+  color: rgba(240, 234, 214, 0.7);
+  line-height: 1.5;
+  flex: 1;
+}
+
+.notif-fecha {
+  font-size: 0.72rem;
+  color: rgba(240, 234, 214, 0.25);
+  white-space: nowrap;
+}
+
+.perfil-empty {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: rgba(240, 234, 214, 0.25);
+  padding: 1rem 0;
+}
+
+/* ── LOGOUT NAV ── */
+.nav-logout {
+  color: rgba(240, 234, 214, 0.4) !important;
+  font-size: 0.8rem !important;
+}
+
+.nav-logout:hover {
+  color: rgba(240, 234, 214, 0.8) !important;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  .perfil-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .insignias-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .perfil-stats {
+    justify-content: center;
+  }
+
+    /* ── FUNDADOR ── */
+.insignia.fundador.activa {
+  border-color: rgba(232, 160, 32, 0.8);
+  background: linear-gradient(135deg, rgba(232,160,32,0.12), rgba(139,111,190,0.08));
+  box-shadow: 0 0 30px rgba(232, 160, 32, 0.2), 0 0 60px rgba(232, 160, 32, 0.05);
+}
+
+.insignia.fundador.activa .insignia-icono {
+  filter: drop-shadow(0 0 8px rgba(232, 160, 32, 0.8));
+}
+
+.insignia.fundador.activa .insignia-nombre {
+  color: rgba(232, 160, 32, 0.9);
+}
+
+/* ── GRID 5 columnas para 10 insignias ── */
+.insignias-grid {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+@media (max-width: 768px) {
+  .insignias-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .insignias-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}  
+}

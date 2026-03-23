@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil — El Lugar Olvidado</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/perfil.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <nav class="nav" id="main-nav">
+    <a href="index.html" class="nav-logo">El Lugar Olvidado</a>
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Explorar</a>
+      <a href="ensayos.html">Ensayos</a>
+      <a href="#">Debates</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="autor.html">Sobre el autor</a>
+      <a href="#" onclick="logout()" class="nav-logout">Salir</a>
+    </div>
+  </nav>
+
+  <main class="perfil-main">
+
+    <!-- HERO PERFIL -->
+    <section class="perfil-hero">
+      <div class="perfil-avatar-wrap">
+        <img id="perfil-avatar" src="" alt="Avatar" class="perfil-avatar">
+        <div class="perfil-nivel-badge" id="perfil-nivel-badge">
+          <span id="perfil-nivel-icono">🕯️</span>
+        </div>
+      </div>
+      <div class="perfil-info">
+        <h1 class="perfil-nombre" id="perfil-nombre">Cargando...</h1>
+        <p class="perfil-email" id="perfil-email"></p>
+        <p class="perfil-nivel-nombre" id="perfil-nivel-nombre">El Curioso</p>
+        <p class="perfil-nivel-desc" id="perfil-nivel-desc">"Toda búsqueda comienza con una pregunta"</p>
+      </div>
+    </section>
+
+    <!-- ESTADÍSTICAS -->
+    <section class="perfil-stats">
+      <div class="perfil-stat">
+        <span class="perfil-stat-num" id="stat-comentarios">0</span>
+        <span class="perfil-stat-label">Comentarios</span>
+      </div>
+      <div class="perfil-stat">
+        <span class="perfil-stat-num" id="stat-referidos">0</span>
+        <span class="perfil-stat-label">Referidos</span>
+      </div>
+      <div class="perfil-stat">
+        <span class="perfil-stat-num" id="stat-nivel">1</span>
+        <span class="perfil-stat-label">Nivel</span>
+      </div>
+    </section>
+
+    <!-- LINK DE REFERIDO -->
+    <section class="perfil-referido">
+      <h2 class="perfil-section-titulo">Tu link de invitación</h2>
+      <p class="perfil-referido-desc">Comparte este link — cuando 3 personas se registren con él alcanzarás el nivel Guardián 🔥</p>
+      <div class="perfil-referido-link">
+        <input type="text" id="referido-link" readonly class="perfil-referido-input">
+        <button onclick="copiarLink()" class="perfil-referido-btn">Copiar</button>
+      </div>
+      <p class="perfil-referido-copiado" id="referido-copiado">¡Link copiado!</p>
+    </section>
+
+    <!-- INSIGNIAS -->
+    <section class="perfil-insignias">
+      <h2 class="perfil-section-titulo">Insignias</h2>
+      <div class="insignias-grid" id="insignias-grid">
+  <div class="insignia bloqueada" data-nivel="1">
+    <span class="insignia-icono">🕯️</span>
+    <span class="insignia-nombre">El Curioso</span>
+    <span class="insignia-desc">Regístrate en el foro</span>
+  </div>
+  <div class="insignia bloqueada" data-nivel="2">
+    <span class="insignia-icono">📖</span>
+    <span class="insignia-nombre">El Pensador</span>
+    <span class="insignia-desc">3 comentarios en ensayos distintos</span>
+  </div>
+  <div class="insignia bloqueada" data-nivel="3">
+    <span class="insignia-icono">⚡</span>
+    <span class="insignia-nombre">El Debatiente</span>
+    <span class="insignia-desc">Recibe 5 respuestas a tus comentarios</span>
+  </div>
+  <div class="insignia bloqueada" data-nivel="4">
+    <span class="insignia-icono">🏛️</span>
+    <span class="insignia-nombre">El Filósofo</span>
+    <span class="insignia-desc">10 comentarios en 3 categorías distintas</span>
+  </div>
+  <div class="insignia bloqueada" data-nivel="5">
+    <span class="insignia-icono">🔥</span>
+    <span class="insignia-nombre">El Guardián</span>
+    <span class="insignia-desc">10 participaciones + 3 respuestas + 3 referidos</span>
+  </div>
+  <div class="insignia bloqueada" data-nivel="6">
+    <span class="insignia-icono">🪶</span>
+    <span class="insignia-nombre">El Mensajero</span>
+    <span class="insignia-desc">Invita a 10 personas activas al foro</span>
+  </div>
+  <div class="insignia bloqueada" data-nivel="7">
+    <span class="insignia-icono">⚗️</span>
+    <span class="insignia-nombre">El Alquimista</span>
+    <span class="insignia-desc">25 comentarios + 5 referidos</span>
+  </div>
+  <div class="insignia bloqueada" data-nivel="8">
+    <span class="insignia-icono">🌀</span>
+    <span class="insignia-nombre">El Oráculo</span>
+    <span class="insignia-desc">50 comentarios + 30 respuestas recibidas</span>
+  </div>
+  <div class="insignia bloqueada especial" data-nivel="9">
+    <span class="insignia-icono">👁️</span>
+    <span class="insignia-nombre">Voz del Lugar</span>
+    <span class="insignia-desc">Otorgada por el Fundador</span>
+  </div>
+  <div class="insignia bloqueada fundador" data-nivel="10">
+    <span class="insignia-icono">🜂</span>
+    <span class="insignia-nombre">El Fundador</span>
+    <span class="insignia-desc">Solo uno. Para siempre.</span>
+  </div>
+</div>
+    </section>
+
+    <!-- NOTIFICACIONES -->
+    <section class="perfil-notificaciones">
+      <h2 class="perfil-section-titulo">Notificaciones <span class="notif-badge" id="notif-badge"></span></h2>
+      <div id="notificaciones-lista">
+        <p class="perfil-empty">Sin notificaciones por ahora.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-name">El Lugar Olvidado</p>
+      <p class="footer-sub">Donde las preguntas importan más que las respuestas.</p>
+    </div>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script src="js/perfil.js"></script>
+
+</body>
+</html>

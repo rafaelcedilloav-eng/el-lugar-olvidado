@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accediendo — El Lugar Olvidado</title>
+  <style>
+    body {
+      background: #060608;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: Georgia, serif;
+      color: rgba(240, 234, 214, 0.6);
+      font-size: 1rem;
+      font-style: italic;
+    }
+    .dots::after {
+      content: '';
+      animation: dots 1.5s steps(3, end) infinite;
+    }
+    @keyframes dots {
+      0%   { content: ''; }
+      33%  { content: '.'; }
+      66%  { content: '..'; }
+      100% { content: '...'; }
+    }
+  </style>
+</head>
+<body>
+  <p>Entrando al lugar olvidado<span class="dots"></span></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // Guardar ref si viene en la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const refId = urlParams.get('ref');
+    if (refId) localStorage.setItem('ref_id', refId);
+
+    const { createClient } = supabase;
+    const _supabase = createClient(
+      'https://vvexfxjizczurnmubqxo.supabase.co',
+      'sb_publishable_o7bG1gCCqBVTO6MwX6UWuw_3SL7YHWS'
+    );
+
+    _supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        window.location.href = '/el-lugar-olvidado/index.html';
+      }
+    });
+
+    // Fallback
+    setTimeout(async () => {
+      const { data: { session } } = await _supabase.auth.getSession();
+      if (session) {
+        window.location.href = '/el-lugar-olvidado/index.html';
+      } else {
+        window.location.href = '/el-lugar-olvidado/login.html';
+      }
+    }, 3000);
+  </script>
+</body>
+</html>
