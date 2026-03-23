@@ -10,6 +10,16 @@ const PUBLIC_PAGES = ['login.html', 'index.html', 'manifiesto.html', 'autor.html
 
 // Verificar sesión activa
 async function checkAuth() {
+  // Primero dejar que Supabase procese el token del hash si existe
+  const { data: { session: hashSession } } = await _supabase.auth.getSession();
+  
+  // Si hay token en el hash de la URL, esperar a que Supabase lo procese
+  if (window.location.hash && window.location.hash.includes('access_token')) {
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    // Limpiar el hash de la URL
+    window.history.replaceState(null, '', window.location.pathname);
+  }
+
   const { data: { session } } = await _supabase.auth.getSession();
   const currentPage = window.location.pathname.split('/').pop() || 'index.html';
   const isPublic = PUBLIC_PAGES.some(p => currentPage.includes(p));
@@ -44,13 +54,22 @@ async function getCurrentUser() {
   return user;
 }
 
+// Escuchar cambios de sesión
+_supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    // Sesión activa — limpiar hash si existe
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }
+});
+
 // Ejecutar verificación al cargar
 document.addEventListener('DOMContentLoaded', async () => {
   const session = await checkAuth();
 
   if (session) {
     const user = session.user;
-    // Actualizar nav con nombre de usuario si existe el elemento
     const navUser = document.getElementById('nav-user');
     if (navUser) {
       navUser.textContent = user.user_metadata?.full_name || user.email;
