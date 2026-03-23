@@ -413,4 +413,19 @@ a:hover {
   border-color: var(--accent);
 }
 
+.nav-perfil {
+  color: rgba(196, 168, 232, 0.7) !important;
+  border: 1px solid rgba(139, 111, 190, 0.25);
+  padding: 4px 12px !important;
+  border-radius: 20px;
+  font-size: 0.8rem !important;
+  transition: all 0.2s;
+}
+
+.nav-perfil:hover {
+  background: rgba(139, 111, 190, 0.15);
+  color: rgba(196, 168, 232, 1) !important;
+  border-color: rgba(139, 111, 190, 0.5);
+}
+
 }
