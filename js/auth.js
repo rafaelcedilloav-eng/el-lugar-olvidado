@@ -26,7 +26,7 @@ async function loginWithGoogle() {
   const { error } = await _supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://rafaelcedilloav-eng.github.io/el-lugar-olvidado/**'
+      redirectTo: 'https://rafaelcedilloav-eng.github.io/el-lugar-olvidado/index.html'
     }
   });
   if (error) console.error('Error login:', error.message);
