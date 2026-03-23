@@ -1,5 +1,6 @@
 /* ── POPUP INSIGNIAS — El Lugar Olvidado ── */
 
+/* ── OVERLAY BASE ── */
 .insignia-overlay {
   position: fixed;
   top: 0;
@@ -20,6 +21,12 @@
   pointer-events: all;
 }
 
+/* Overlay Fundador — más oscuro, casi total */
+.insignia-overlay-fundador.visible {
+  background: rgba(4, 2, 8, 0.97);
+}
+
+/* ── MODAL BASE ── */
 .insignia-modal {
   position: relative;
   width: 420px;
@@ -51,11 +58,11 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: radial-gradient(ellipse at 50% 0%, var(--color-principal, #8B6FBE)08, transparent 70%);
+  background: radial-gradient(ellipse at 50% 0%, color-mix(in srgb, var(--color-principal) 8%, transparent), transparent 70%);
   pointer-events: none;
 }
 
-/* Partículas */
+/* ── PARTÍCULAS ── */
 .insignia-particulas {
   position: absolute;
   top: 0;
@@ -66,27 +73,75 @@
   overflow: hidden;
 }
 
+.insignia-particulas-espiral {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .particula {
   position: absolute;
   bottom: -10px;
-  animation: particulaSubir linear infinite;
   opacity: 0;
 }
 
+/* Animaciones de partículas */
 @keyframes particulaSubir {
-  0% { bottom: -10px; opacity: 0; transform: translateX(0) scale(1); }
-  10% { opacity: 1; }
-  90% { opacity: 0.6; }
-  100% { bottom: 110%; opacity: 0; transform: translateX(calc(var(--drift, 20px) * 1)) scale(0.3); }
+  0%   { bottom: -10px; opacity: 0; transform: translateX(0) scale(1); }
+  10%  { opacity: 0.8; }
+  85%  { opacity: 0.4; }
+  100% { bottom: 110%; opacity: 0; transform: translateX(var(--drift, 20px)) scale(0.3); }
 }
 
-@keyframes particulaEspiral {
-  0% { bottom: 50%; left: 50%; opacity: 0; transform: rotate(0deg) translateX(0px) scale(1); }
-  50% { opacity: 1; transform: rotate(180deg) translateX(80px) scale(0.8); }
-  100% { bottom: 50%; left: 50%; opacity: 0; transform: rotate(360deg) translateX(0px) scale(0.1); }
+@keyframes particulaVela {
+  0%   { bottom: 30%; opacity: 0; transform: translateX(0) scale(1); }
+  15%  { opacity: 0.9; }
+  80%  { opacity: 0.2; }
+  100% { bottom: 95%; opacity: 0; transform: translateX(var(--drift, 15px)) scale(0.1); }
 }
 
-/* Contenido */
+@keyframes particulaLlama {
+  0%   { bottom: -5px; opacity: 0; transform: translateX(0) scaleY(1); }
+  20%  { opacity: 0.9; }
+  70%  { opacity: 0.5; transform: translateX(var(--drift, 10px)) scaleY(0.6); }
+  100% { bottom: 80%; opacity: 0; transform: translateX(var(--drift, 10px)) scaleY(0.1); }
+}
+
+@keyframes particulaRayo {
+  0%   { opacity: 0; transform: rotate(var(--rot, 0deg)) scaleX(0); }
+  20%  { opacity: 1; transform: rotate(var(--rot, 0deg)) scaleX(1); }
+  50%  { opacity: 0.6; }
+  100% { opacity: 0; transform: rotate(var(--rot, 0deg)) scaleX(0.2); }
+}
+
+@keyframes particulaFlotar {
+  0%   { bottom: 10%; opacity: 0; transform: translateX(0); }
+  30%  { opacity: 0.5; }
+  60%  { opacity: 0.3; transform: translateX(var(--drift, 20px)); }
+  100% { bottom: 95%; opacity: 0; transform: translateX(var(--drift, 20px)); }
+}
+
+@keyframes particulaOrbita {
+  0%   { transform: rotate(var(--orbita-inicio, 0deg)) translateX(var(--orbita-radio, 80px)) scale(1); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: rotate(calc(var(--orbita-inicio, 0deg) + 360deg)) translateX(var(--orbita-radio, 80px)) scale(0.4); opacity: 0; }
+}
+
+@keyframes particulaDestello {
+  0%   { opacity: 0; transform: scale(0.5); }
+  50%  { opacity: 1; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(0.5); }
+}
+
+@keyframes particulaBrasa {
+  0%   { top: -10px; opacity: 0; transform: translateX(0) scale(1); }
+  10%  { opacity: 1; }
+  80%  { opacity: 0.6; }
+  100% { top: 110%; opacity: 0; transform: translateX(var(--drift, 20px)) scale(0.2); }
+}
+
+/* ── CONTENIDO BASE ── */
 .insignia-modal-contenido {
   position: relative;
   z-index: 2;
@@ -134,8 +189,8 @@
 }
 
 @keyframes ringPulse {
-  0%, 100% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.08); opacity: 1; }
+  0%, 100% { transform: scale(1); opacity: 0.5; }
+  50%       { transform: scale(1.08); opacity: 1; }
 }
 
 .insignia-modal-icono {
@@ -149,12 +204,12 @@
 }
 
 @keyframes iconoBounce {
-  0% { opacity: 0; transform: scale(0) rotate(-10deg); }
+  0%   { opacity: 0; transform: scale(0) rotate(-10deg); }
   100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
 .insignia-modal-nombre {
-  font-family: var(--font-serif, Georgia);
+  font-family: var(--font-serif, 'IM Fell English', Georgia, serif);
   font-size: 1.8rem;
   font-weight: normal;
   line-height: 1.1;
@@ -165,7 +220,7 @@
 }
 
 .insignia-modal-desc {
-  font-family: var(--font-serif, Georgia);
+  font-family: var(--font-serif, 'IM Fell English', Georgia, serif);
   font-size: 0.9rem;
   font-style: italic;
   color: rgba(240, 234, 214, 0.55);
@@ -179,10 +234,10 @@
 .insignia-modal-linea {
   width: 80%;
   height: 1px;
-  opacity: 0.4;
   animation: fadeUp 0.5s ease forwards;
   animation-delay: 0.75s;
   opacity: 0;
+  transform: translateY(10px);
 }
 
 .insignia-modal-frase {
@@ -203,7 +258,7 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.85rem;
-  font-family: var(--font-serif, Georgia);
+  font-family: var(--font-serif, 'IM Fell English', Georgia, serif);
   transition: all 0.2s;
   animation: fadeUp 0.5s ease forwards;
   animation-delay: 1s;
@@ -222,27 +277,270 @@
 
 /* ── ANIMACIONES ESPECIALES POR TIPO ── */
 
-/* Fundador — efecto dorado épico */
-.insignia-modal-fundador {
-  border-color: rgba(232, 160, 32, 0.3);
-  box-shadow: 0 0 60px rgba(232, 160, 32, 0.15), inset 0 0 40px rgba(232, 160, 32, 0.03);
+/* Vela — suave y tenue */
+.insignia-modal-vela {
+  box-shadow: 0 0 40px rgba(245, 230, 200, 0.08);
 }
 
-/* Oráculo — efecto espiral */
-.insignia-modal-espiral {
-  box-shadow: 0 0 60px rgba(167, 139, 250, 0.2);
+/* Libro — sin efecto especial, sobrio */
+.insignia-modal-libro {
+  box-shadow: 0 0 30px rgba(232, 213, 163, 0.08);
 }
 
-/* Debatiente — efecto eléctrico */
+/* Debatiente — eléctrico con temblor sutil */
 .insignia-modal-electrico {
   box-shadow: 0 0 60px rgba(96, 165, 250, 0.2);
-  animation: electricoShake 0.1s ease infinite;
+  animation: electricoShake 0.08s ease-in-out infinite, modalEntrada 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 @keyframes electricoShake {
-  0%, 100% { transform: translateY(0) scale(1); }
-  25% { transform: translateY(-1px) scale(1.001); }
-  75% { transform: translateY(1px) scale(0.999); }
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25%       { transform: translateY(-1px) translateX(0.5px); }
+  75%       { transform: translateY(1px) translateX(-0.5px); }
+}
+
+/* Filósofo — pilares, sereno */
+.insignia-modal-pilares {
+  box-shadow: 0 0 50px rgba(196, 168, 232, 0.12);
+}
+
+/* Guardián — glow cálido */
+.insignia-modal-llamas {
+  box-shadow: 0 0 70px rgba(251, 146, 60, 0.2), 0 0 120px rgba(251, 146, 60, 0.08);
+}
+
+/* Mensajero — etéreo */
+.insignia-modal-flotar {
+  box-shadow: 0 0 40px rgba(226, 232, 240, 0.1);
+}
+
+/* Alquimista — verde brillo */
+.insignia-modal-alquimia {
+  box-shadow: 0 0 60px rgba(52, 211, 153, 0.15);
+}
+
+/* Oráculo — espiral violeta */
+.insignia-modal-espiral {
+  box-shadow: 0 0 80px rgba(167, 139, 250, 0.2);
+  animation: oraculoRotar 20s linear infinite, modalEntrada 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes oraculoRotar {
+  from { --rot-border: 0deg; }
+  to   { --rot-border: 360deg; }
+}
+
+/* Voz del Lugar */
+.insignia-modal-ojo {
+  box-shadow: 0 0 80px rgba(232, 160, 32, 0.2);
+}
+
+/* ── EL FUNDADOR — DISEÑO COMPLETAMENTE DISTINTO ── */
+
+.insignia-modal-fundador {
+  width: 480px;
+  max-width: 92vw;
+  padding: 3.5rem 3rem;
+  background: rgba(8, 4, 14, 0.98);
+  border: 1px solid rgba(232, 160, 32, 0.25);
+  border-radius: 4px; /* más cuadrado, más severo */
+  box-shadow:
+    0 0 0 1px rgba(232, 160, 32, 0.08),
+    0 0 80px rgba(232, 160, 32, 0.2),
+    0 0 200px rgba(232, 160, 32, 0.08),
+    inset 0 0 60px rgba(232, 160, 32, 0.04);
+  transform: translateY(60px) scale(0.88);
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.7s ease;
+}
+
+.insignia-overlay-fundador.visible .insignia-modal-fundador {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Fondo del Fundador — gradiente dramático */
+.insignia-fundador-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 20%, rgba(232, 160, 32, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(232, 160, 32, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Líneas decorativas tipo Cruz */
+.insignia-fundador-linea-h {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232, 160, 32, 0.15), transparent);
+  pointer-events: none;
+}
+
+.insignia-fundador-linea-v {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg, transparent, rgba(232, 160, 32, 0.1), transparent);
+  pointer-events: none;
+}
+
+/* Kicker del Fundador */
+.insignia-fundador-kicker {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  color: rgba(232, 160, 32, 0.5);
+  text-transform: uppercase;
+  font-family: system-ui;
+  animation: fadeUp 0.8s ease forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+/* Anillos del Fundador — tres, más dramáticos */
+.insignia-fundador-ring1 {
+  position: absolute;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 160, 32, 0.15);
+  animation: fundadorRing 3s ease-in-out infinite;
+}
+
+.insignia-fundador-ring2 {
+  position: absolute;
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 160, 32, 0.3);
+  animation: fundadorRing 3s ease-in-out infinite 0.4s;
+}
+
+.insignia-fundador-ring3 {
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 160, 32, 0.5);
+  animation: fundadorRing 3s ease-in-out infinite 0.8s;
+}
+
+@keyframes fundadorRing {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50%       { transform: scale(1.06); opacity: 1; }
+}
+
+/* Ícono del Fundador — más grande, aparece desde la oscuridad */
+.insignia-fundador-icono {
+  font-size: 3.6rem;
+  animation: fundadorIcono 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+  transform: scale(0) rotate(-30deg);
+  filter: drop-shadow(0 0 20px rgba(232, 160, 32, 0.8));
+}
+
+@keyframes fundadorIcono {
+  0%   { opacity: 0; transform: scale(0) rotate(-30deg); filter: brightness(0); }
+  60%  { opacity: 1; transform: scale(1.15) rotate(5deg); filter: drop-shadow(0 0 30px rgba(232, 160, 32, 1)) brightness(1.5); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 15px rgba(232, 160, 32, 0.8)); }
+}
+
+/* Nombre del Fundador */
+.insignia-fundador-nombre {
+  font-family: var(--font-serif, 'IM Fell English', Georgia, serif);
+  font-size: 2.2rem;
+  font-weight: normal;
+  color: #E8A020;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 40px rgba(232, 160, 32, 0.5);
+  animation: fadeUp 0.6s ease forwards;
+  animation-delay: 0.8s;
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+/* Desc del Fundador */
+.insignia-fundador-desc {
+  font-family: var(--font-serif, 'IM Fell English', Georgia, serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: rgba(232, 160, 32, 0.5);
+  line-height: 1.7;
+  animation: fadeUp 0.6s ease forwards;
+  animation-delay: 1s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Separador del Fundador */
+.insignia-fundador-separador {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 80%;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 1.15s;
+  opacity: 0;
+}
+
+.insignia-fundador-sep-linea {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(232, 160, 32, 0.3));
+}
+
+.insignia-fundador-sep-linea:last-child {
+  background: linear-gradient(270deg, transparent, rgba(232, 160, 32, 0.3));
+}
+
+.insignia-fundador-sep-punto {
+  color: rgba(232, 160, 32, 0.5);
+  font-size: 0.7rem;
+}
+
+/* Frase del Fundador */
+.insignia-fundador-frase {
+  font-size: 0.82rem;
+  color: rgba(232, 160, 32, 0.35);
+  font-style: italic;
+  font-family: var(--font-serif, Georgia, serif);
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 1.3s;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+/* Botón del Fundador */
+.insignia-fundador-btn {
+  margin-top: 0.75rem;
+  padding: 11px 36px;
+  background: transparent;
+  border: 1px solid rgba(232, 160, 32, 0.3);
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-family: var(--font-serif, 'IM Fell English', Georgia, serif);
+  color: rgba(232, 160, 32, 0.7);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 1.5s;
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.insignia-fundador-btn:hover {
+  background: rgba(232, 160, 32, 0.06);
+  border-color: rgba(232, 160, 32, 0.6);
+  color: rgba(232, 160, 32, 1);
+  box-shadow: 0 0 20px rgba(232, 160, 32, 0.15);
+  transform: translateY(-1px);
 }
 
 /* ── RESPONSIVE ── */
@@ -252,5 +550,11 @@
   }
   .insignia-modal-nombre {
     font-size: 1.4rem;
+  }
+  .insignia-modal-fundador {
+    padding: 2.5rem 1.75rem;
+  }
+  .insignia-fundador-nombre {
+    font-size: 1.7rem;
   }
 }
