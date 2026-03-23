@@ -121,7 +121,7 @@ async function cargarReferidos(userId, profile) {
       tipo: 'nivel',
       mensaje: '🔥 ¡Alcanzaste el nivel Guardián! Has invitado a 10 personas al foro.',
       leida: false
-mostrarInsignia(5);
+     mostrarInsignia(6);
     });
   }
 }
