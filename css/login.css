@@ -1,0 +1,121 @@
+/* ── LOGIN PAGE — El Lugar Olvidado ── */
+.login-body {
+  background: #060608;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.login-brand {
+  text-align: center;
+}
+
+.login-logo {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: #F0EAD6;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.login-tagline {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  font-style: italic;
+  color: rgba(240, 234, 214, 0.35);
+  margin-top: 0.5rem;
+}
+
+.login-card {
+  width: 100%;
+  background: rgba(45, 31, 61, 0.4);
+  border: 1px solid rgba(139, 111, 190, 0.15);
+  border-radius: 12px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  backdrop-filter: blur(20px);
+}
+
+.login-titulo {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: normal;
+  color: #F0EAD6;
+  text-align: center;
+}
+
+.login-sub {
+  font-family: var(--font-serif);
+  font-size: 0.9rem;
+  color: rgba(240, 234, 214, 0.5);
+  text-align: center;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.login-google-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 24px;
+  background: #F0EAD6;
+  color: #1A1020;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-sans, system-ui);
+}
+
+.login-google-btn:hover {
+  background: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(139, 111, 190, 0.25);
+}
+
+.login-aviso {
+  font-size: 0.75rem;
+  color: rgba(240, 234, 214, 0.3);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.login-footer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.login-footer a {
+  font-size: 0.75rem;
+  color: rgba(139, 111, 190, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.login-footer a:hover {
+  color: rgba(139, 111, 190, 0.9);
+}
+
+.login-footer span {
+  color: rgba(139, 111, 190, 0.3);
+  font-size: 0.75rem;
+}
