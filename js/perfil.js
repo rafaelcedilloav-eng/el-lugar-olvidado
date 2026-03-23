@@ -65,12 +65,13 @@ async function initPerfil() {
 function renderPerfil(user, profile) {
   const nivel = profile?.nivel || 1;
   const nivelData = NIVELES[nivel - 1];
-  
+
   // Mostrar insignia nivel 1 si es nuevo usuario
   if (nivel === 1 && !localStorage.getItem('insignia_1_mostrada')) {
     setTimeout(() => mostrarInsignia(1), 1500);
     localStorage.setItem('insignia_1_mostrada', 'true');
   }
+
   // Avatar
   const avatar = document.getElementById('perfil-avatar');
   if (avatar) {
@@ -121,8 +122,10 @@ async function cargarReferidos(userId, profile) {
       tipo: 'nivel',
       mensaje: '🔥 ¡Alcanzaste el nivel Guardián! Has invitado a 10 personas al foro.',
       leida: false
-     mostrarInsignia(6);
     });
+
+    // ← FIX: mostrarInsignia va FUERA del objeto insert, no dentro
+    mostrarInsignia(6);
   }
 }
 
