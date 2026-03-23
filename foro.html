@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Foro — El Lugar Olvidado. Debates sobre filosofía, metafísica, teología y cosmología.">
+  <meta name="author" content="Rafael Cedillo">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Foro — El Lugar Olvidado</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/foro.css">
+</head>
+
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <nav class="nav" id="main-nav">
+    <a href="index.html" class="nav-logo">El Lugar Olvidado</a>
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="index.html">Explorar</a>
+      <a href="ensayos.html">Ensayos</a>
+      <a href="foro.html" class="nav-active">Foro</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="autor.html">Sobre el autor</a>
+      <a href="perfil.html" class="nav-perfil" id="nav-user">Mi perfil</a>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="foro-header">
+    <div class="foro-header-content">
+      <p class="foro-kicker">— El Foro —</p>
+      <h1 class="foro-titulo">Donde las ideas<br>encuentran fricción</h1>
+      <p class="foro-subtitulo">Debates nacidos de los ensayos y preguntas que no caben en ningún artículo.</p>
+    </div>
+    <div class="foro-header-linea"></div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="foro-main container">
+
+    <!-- TABS -->
+    <div class="foro-tabs">
+      <button class="foro-tab activo" data-tab="ensayos" onclick="cambiarTab('ensayos')">
+        Debates de ensayos
+      </button>
+      <button class="foro-tab" data-tab="independientes" onclick="cambiarTab('independientes')">
+        Temas independientes
+      </button>
+    </div>
+
+    <!-- PANEL: DEBATES DE ENSAYOS -->
+    <section class="foro-panel activo" id="panel-ensayos">
+      <div class="foro-debates-grid" id="debates-ensayos">
+        <div class="foro-loading">
+          <span class="foro-loading-icono">⟳</span>
+          <p>Cargando debates...</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL: TEMAS INDEPENDIENTES -->
+    <section class="foro-panel" id="panel-independientes">
+
+      <!-- Botón proponer tema — visible para niveles 8, 9, 10 -->
+      <div class="foro-proponer-wrap" id="foro-proponer-wrap" style="display:none">
+        <button class="foro-proponer-btn" id="foro-proponer-btn" onclick="abrirModalPropuesta()">
+          <span>✦</span> Proponer nuevo debate
+        </button>
+      </div>
+
+      <div class="foro-debates-grid" id="debates-independientes">
+        <div class="foro-loading">
+          <span class="foro-loading-icono">⟳</span>
+          <p>Cargando temas...</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODAL PROPUESTA DE DEBATE -->
+  <div class="foro-modal-overlay" id="modal-propuesta" style="display:none">
+    <div class="foro-modal">
+      <button class="foro-modal-cerrar" onclick="cerrarModalPropuesta()">✕</button>
+      <p class="foro-modal-kicker">Nueva propuesta de debate</p>
+      <h2 class="foro-modal-titulo">¿Qué quieres debatir?</h2>
+      <div class="foro-modal-form">
+        <input
+          type="text"
+          id="propuesta-titulo"
+          class="foro-input"
+          placeholder="Título del debate"
+          maxlength="120"
+        />
+        <textarea
+          id="propuesta-descripcion"
+          class="foro-textarea"
+          placeholder="Describe de qué trata este debate y por qué es relevante para El Lugar Olvidado..."
+          maxlength="600"
+          rows="5"
+        ></textarea>
+        <div class="foro-modal-acciones">
+          <button class="foro-btn-secundario" onclick="cerrarModalPropuesta()">Cancelar</button>
+          <button class="foro-btn-primario" id="btn-enviar-propuesta" onclick="enviarPropuesta()">
+            Enviar propuesta
+          </button>
+        </div>
+        <p class="foro-modal-nota" id="propuesta-nota"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <p class="footer-name">El Lugar Olvidado</p>
+      <p class="footer-sub">Donde las preguntas importan más que las respuestas.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/foro.js"></script>
+
+</body>
+</html>
