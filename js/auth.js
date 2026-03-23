@@ -6,7 +6,7 @@ const { createClient } = supabase;
 const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // Páginas públicas — no requieren auth
-const PUBLIC_PAGES = ['login.html', 'index.html'];
+const PUBLIC_PAGES = ['login.html', 'index.html', 'manifiesto.html', 'autor.html', 'ensayos.html'];
 
 // Verificar sesión activa
 async function checkAuth() {
