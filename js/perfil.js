@@ -65,12 +65,12 @@ async function initPerfil() {
 function renderPerfil(user, profile) {
   const nivel = profile?.nivel || 1;
   const nivelData = NIVELES[nivel - 1];
+  
   // Mostrar insignia nivel 1 si es nuevo usuario
-if (nivel === 1 && !localStorage.getItem('insignia_1_mostrada')) {
-  setTimeout(() => mostrarInsignia(1), 1500);
-  localStorage.setItem('insignia_1_mostrada', 'true');
-}
-
+  if (nivel === 1 && !localStorage.getItem('insignia_1_mostrada')) {
+    setTimeout(() => mostrarInsignia(1), 1500);
+    localStorage.setItem('insignia_1_mostrada', 'true');
+  }
   // Avatar
   const avatar = document.getElementById('perfil-avatar');
   if (avatar) {
