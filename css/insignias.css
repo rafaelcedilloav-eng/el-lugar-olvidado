@@ -1,0 +1,256 @@
+/* ── POPUP INSIGNIAS — El Lugar Olvidado ── */
+
+.insignia-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(6, 6, 8, 0);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.6s ease;
+  pointer-events: none;
+}
+
+.insignia-overlay.visible {
+  background: rgba(6, 6, 8, 0.92);
+  pointer-events: all;
+}
+
+.insignia-modal {
+  position: relative;
+  width: 420px;
+  max-width: 90vw;
+  padding: 3rem 2.5rem;
+  border-radius: 16px;
+  background: rgba(26, 16, 32, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  text-align: center;
+  transform: translateY(40px) scale(0.92);
+  opacity: 0;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+  overflow: hidden;
+}
+
+.insignia-overlay.visible .insignia-modal {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Fondo con gradiente de color */
+.insignia-modal-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at 50% 0%, var(--color-principal, #8B6FBE)08, transparent 70%);
+  pointer-events: none;
+}
+
+/* Partículas */
+.insignia-particulas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.particula {
+  position: absolute;
+  bottom: -10px;
+  animation: particulaSubir linear infinite;
+  opacity: 0;
+}
+
+@keyframes particulaSubir {
+  0% { bottom: -10px; opacity: 0; transform: translateX(0) scale(1); }
+  10% { opacity: 1; }
+  90% { opacity: 0.6; }
+  100% { bottom: 110%; opacity: 0; transform: translateX(calc(var(--drift, 20px) * 1)) scale(0.3); }
+}
+
+@keyframes particulaEspiral {
+  0% { bottom: 50%; left: 50%; opacity: 0; transform: rotate(0deg) translateX(0px) scale(1); }
+  50% { opacity: 1; transform: rotate(180deg) translateX(80px) scale(0.8); }
+  100% { bottom: 50%; left: 50%; opacity: 0; transform: rotate(360deg) translateX(0px) scale(0.1); }
+}
+
+/* Contenido */
+.insignia-modal-contenido {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.insignia-modal-kicker {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(240, 234, 214, 0.4);
+  font-family: system-ui;
+}
+
+/* Icono con anillos */
+.insignia-modal-icono-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+.insignia-modal-icono-ring {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 1px solid;
+  animation: ringPulse 2s ease-in-out infinite;
+}
+
+.insignia-modal-icono-ring2 {
+  position: absolute;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1px solid;
+  animation: ringPulse 2s ease-in-out infinite 0.5s;
+}
+
+@keyframes ringPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.08); opacity: 1; }
+}
+
+.insignia-modal-icono {
+  font-size: 2.8rem;
+  position: relative;
+  z-index: 2;
+  animation: iconoBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+  transform: scale(0);
+}
+
+@keyframes iconoBounce {
+  0% { opacity: 0; transform: scale(0) rotate(-10deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+.insignia-modal-nombre {
+  font-family: var(--font-serif, Georgia);
+  font-size: 1.8rem;
+  font-weight: normal;
+  line-height: 1.1;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 0.5s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.insignia-modal-desc {
+  font-family: var(--font-serif, Georgia);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: rgba(240, 234, 214, 0.55);
+  line-height: 1.6;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 0.65s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.insignia-modal-linea {
+  width: 80%;
+  height: 1px;
+  opacity: 0.4;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 0.75s;
+  opacity: 0;
+}
+
+.insignia-modal-frase {
+  font-size: 0.78rem;
+  color: rgba(240, 234, 214, 0.3);
+  font-style: italic;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 0.85s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.insignia-modal-btn {
+  margin-top: 0.5rem;
+  padding: 10px 28px;
+  background: transparent;
+  border: 1px solid;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-family: var(--font-serif, Georgia);
+  transition: all 0.2s;
+  animation: fadeUp 0.5s ease forwards;
+  animation-delay: 1s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.insignia-modal-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── ANIMACIONES ESPECIALES POR TIPO ── */
+
+/* Fundador — efecto dorado épico */
+.insignia-modal-fundador {
+  border-color: rgba(232, 160, 32, 0.3);
+  box-shadow: 0 0 60px rgba(232, 160, 32, 0.15), inset 0 0 40px rgba(232, 160, 32, 0.03);
+}
+
+/* Oráculo — efecto espiral */
+.insignia-modal-espiral {
+  box-shadow: 0 0 60px rgba(167, 139, 250, 0.2);
+}
+
+/* Debatiente — efecto eléctrico */
+.insignia-modal-electrico {
+  box-shadow: 0 0 60px rgba(96, 165, 250, 0.2);
+  animation: electricoShake 0.1s ease infinite;
+}
+
+@keyframes electricoShake {
+  0%, 100% { transform: translateY(0) scale(1); }
+  25% { transform: translateY(-1px) scale(1.001); }
+  75% { transform: translateY(1px) scale(0.999); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 480px) {
+  .insignia-modal {
+    padding: 2rem 1.5rem;
+  }
+  .insignia-modal-nombre {
+    font-size: 1.4rem;
+  }
+}

@@ -65,6 +65,11 @@ async function initPerfil() {
 function renderPerfil(user, profile) {
   const nivel = profile?.nivel || 1;
   const nivelData = NIVELES[nivel - 1];
+  // Mostrar insignia nivel 1 si es nuevo usuario
+if (nivel === 1 && !localStorage.getItem('insignia_1_mostrada')) {
+  setTimeout(() => mostrarInsignia(1), 1500);
+  localStorage.setItem('insignia_1_mostrada', 'true');
+}
 
   // Avatar
   const avatar = document.getElementById('perfil-avatar');
@@ -103,19 +108,20 @@ async function cargarReferidos(userId, profile) {
   const total = referidos?.length || 0;
   document.getElementById('stat-referidos').textContent = total;
 
-  // Verificar si sube a nivel 5
-  if (total >= 3 && profile?.nivel < 5) {
+  // Verificar si sube a nivel 6
+  if (total >= 10 && profile?.nivel < 6) {
     await _supabase
       .from('profiles')
-      .update({ nivel: 5 })
+      .update({ nivel: 6 })
       .eq('id', userId);
 
     // Crear notificación de subida de nivel
     await _supabase.from('notificaciones').insert({
       user_id: userId,
       tipo: 'nivel',
-      mensaje: '🔥 ¡Alcanzaste el nivel Guardián! Has invitado a 3 personas al foro.',
+      mensaje: '🔥 ¡Alcanzaste el nivel Guardián! Has invitado a 10 personas al foro.',
       leida: false
+mostrarInsignia(5);
     });
   }
 }
