@@ -8,7 +8,7 @@ const DEBATES_ENSAYOS = [
     titulo: 'El Libre Albedrío No Es Libertad — Es un Costo',
     descripcion: '¿Elegimos realmente o simplemente ejecutamos lo que el sistema nos dejó elegir?',
     categoria: 'Filosofía',
-    url: 'debates/debate-libre-albedrio.html'
+    url: 'debates/debate.html?id=debate-libre-albedrio'
   },
   {
     id: 'debate-moral',
@@ -16,7 +16,7 @@ const DEBATES_ENSAYOS = [
     titulo: 'La Moral que Nadie Eligió',
     descripcion: '¿Puede ser legítima una moral que nos fue impuesta antes de que pudiéramos cuestionarla?',
     categoria: 'Filosofía',
-    url: 'debates/debate-moral.html'
+    url: 'debates/debate.html?id=debate-moral'
   },
   {
     id: 'debate-conciencia',
@@ -24,7 +24,7 @@ const DEBATES_ENSAYOS = [
     titulo: 'La Conciencia Como Base del Universo',
     descripcion: '¿Es la conciencia un producto de la materia o su fundamento?',
     categoria: 'Metafísica',
-    url: 'debates/debate-conciencia.html'
+    url: 'debates/debate.html?id=debate-conciencia'
   },
   {
     id: 'debate-tiempo',
@@ -32,7 +32,7 @@ const DEBATES_ENSAYOS = [
     titulo: 'El Tiempo No Existe — Solo la Transformación',
     descripcion: '¿Qué queda de nuestra experiencia si el tiempo es solo una ilusión cognitiva?',
     categoria: 'Cosmología',
-    url: 'debates/debate-tiempo.html'
+    url: 'debates/debate.html?id=debate-tiempo'
   }
 ];
 
