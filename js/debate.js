@@ -3,7 +3,7 @@
 const DEBATE_UUID_MAP = {
   'debate-libre-albedrio': '0fd5b9a3-c8cb-459d-9e2f-e7791b8d21e1',
   'debate-moral':          '4cc14c5f-98a2-4e5d-b282-0dc07a56b5f5',
-  'debate-conciencia':     'acaf7505-e33e-4ddc-9ea4-36363ce943f8',
+  'debate-conciencia': 'acaf7505-e33e-4ddc-9ea4-36363ce943f8',
   'debate-tiempo':         '3c228fcf-9c20-4c84-9648-3710b54e0d57'
 };
 
