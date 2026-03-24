@@ -282,6 +282,7 @@ async function renderPosturasBar() {
 
 // ── CARGAR MENSAJES ───────────────────────────────────────────────────────────
 async function cargarMensajes() {
+    console.log('debateId:', debateId, 'debateSlug:', debateSlug);
   const db = window.__ELO.getClient();
 
   const { data: mensajes } = await db
