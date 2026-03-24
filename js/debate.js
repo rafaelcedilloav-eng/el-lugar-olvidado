@@ -1,14 +1,31 @@
 // ── Debate — El Lugar Olvidado
 
-// ── UUID MAP ──────────────────────────────────────────────────────────────────
 const DEBATE_UUID_MAP = {
   'debate-libre-albedrio': '0fd5b9a3-c8cb-459d-9e2f-e7791b8d21e1',
-  'debate-moral':          '4cc14c5f-98a2-4e5d-b282-0dc87a56b5f5',
-  'debate-conciencia':     'acaf7585-e33e-4ddc-9ea4-36363ce943f8',
+  'debate-moral':          '4cc14c5f-98a2-4e5d-b282-0dc07a56b5f5',
+  'debate-conciencia':     'acaf7505-e33e-4ddc-9ea4-36363ce943f8',
   'debate-tiempo':         '3c228fcf-9c20-4c84-9648-3710b54e0d57'
 };
 
-// ── POSTURAS PREDEFINIDAS POR DEBATE ─────────────────────────────────────────
+const POSTURA_UUID_MAP = {
+  'compatibilismo':    '2198f51a-f715-41ad-8d12-1ca79a1fe2c1',
+  'determinismo':      '927985f5-aea1-4db7-bffa-6500f1cc9fe9',
+  'escepticismo':      '91eefbeb-8d1e-49b8-8150-edc7ffdbf8c5',
+  'libertarismo':      '7c07dca6-ec8d-4405-888e-37115eaea9ef',
+  'eternismo':         '514d3bda-5931-461f-900a-1dcb5421eb09',
+  'presentismo':       'ffa4df9a-d542-402d-94a3-0ff13fbf57ef',
+  'realismo-temporal': '1d843715-b2ef-4bb7-b927-7e7961320e7f',
+  'relacionismo':      '4c776c16-39c1-4953-9aa8-e6a0d4480dec',
+  'construccionismo':  '819c04f5-0189-4602-b8b5-1c0cd1fcfcb9',
+  'nihilismo-moral':   '77e1a30e-28a7-4d11-83a3-4fb7c7d77bde',
+  'relativismo':       '63e21d61-1fb5-42f6-8dcb-300e6deba265',
+  'universalismo':     'c60efb7e-05cb-4b08-a49f-b4379fbb603f',
+  'dualismo':          'c19c4993-4469-44d5-8f9e-dbb79d2213a6',
+  'idealismo':         'f1a0afee-f1e1-43ad-962d-0475efcf9eb6',
+  'materialismo':      '36dd88a4-598d-4b35-b0ef-e62396699536',
+  'panpsiquismo':      'ee9c9220-9e2d-4385-9b83-0c89c8b3f7f7'
+};
+
 const POSTURAS_CONFIG = {
   'debate-libre-albedrio': [
     { id: 'determinismo',    nombre: 'Determinismo',            desc: 'Nuestras decisiones son producto de causas previas, no de libertad real.',      color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
@@ -17,16 +34,16 @@ const POSTURAS_CONFIG = {
     { id: 'escepticismo',    nombre: 'Escepticismo',            desc: 'El libre albedrío es una ilusión útil que el sistema necesita para funcionar.',  color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)',  colorBorder: 'rgba(251,146,60,0.25)',  colorShadow: 'rgba(251,146,60,0.12)'  }
   ],
   'debate-moral': [
-    { id: 'relativismo',      nombre: 'Relativismo',     desc: 'La moral es cultural y contextual, no existe una moral universal válida.',       color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
-    { id: 'universalismo',    nombre: 'Universalismo',   desc: 'Existen principios morales válidos para toda la humanidad, en todo tiempo.',     color: '#C4A8E8', colorBg: 'rgba(196,168,232,0.08)', colorBorder: 'rgba(196,168,232,0.25)', colorShadow: 'rgba(196,168,232,0.12)' },
-    { id: 'construccionismo', nombre: 'Construccionismo',desc: 'La moral se construye colectivamente, no se hereda ni se descubre.',             color: '#34D399', colorBg: 'rgba(52,211,153,0.08)',  colorBorder: 'rgba(52,211,153,0.25)',  colorShadow: 'rgba(52,211,153,0.12)'  },
-    { id: 'nihilismo-moral',  nombre: 'Nihilismo moral', desc: 'La moral no tiene fundamento objetivo. Todo juicio moral es una proyección.',   color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)',  colorBorder: 'rgba(251,146,60,0.25)',  colorShadow: 'rgba(251,146,60,0.12)'  }
+    { id: 'relativismo',      nombre: 'Relativismo',      desc: 'La moral es cultural y contextual, no existe una moral universal válida.',      color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
+    { id: 'universalismo',    nombre: 'Universalismo',    desc: 'Existen principios morales válidos para toda la humanidad, en todo tiempo.',    color: '#C4A8E8', colorBg: 'rgba(196,168,232,0.08)', colorBorder: 'rgba(196,168,232,0.25)', colorShadow: 'rgba(196,168,232,0.12)' },
+    { id: 'construccionismo', nombre: 'Construccionismo', desc: 'La moral se construye colectivamente, no se hereda ni se descubre.',            color: '#34D399', colorBg: 'rgba(52,211,153,0.08)',  colorBorder: 'rgba(52,211,153,0.25)',  colorShadow: 'rgba(52,211,153,0.12)'  },
+    { id: 'nihilismo-moral',  nombre: 'Nihilismo moral',  desc: 'La moral no tiene fundamento objetivo. Todo juicio moral es una proyección.',  color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)',  colorBorder: 'rgba(251,146,60,0.25)',  colorShadow: 'rgba(251,146,60,0.12)'  }
   ],
   'debate-conciencia': [
-    { id: 'materialismo',  nombre: 'Materialismo', desc: 'La conciencia es producto del cerebro y la materia. Nada más existe.',           color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
-    { id: 'panpsiquismo',  nombre: 'Panpsiquismo', desc: 'La conciencia es una propiedad fundamental del universo, no solo del cerebro.',  color: '#C4A8E8', colorBg: 'rgba(196,168,232,0.08)', colorBorder: 'rgba(196,168,232,0.25)', colorShadow: 'rgba(196,168,232,0.12)' },
-    { id: 'dualismo',      nombre: 'Dualismo',     desc: 'Mente y materia son realidades distintas que no se reducen la una a la otra.',   color: '#34D399', colorBg: 'rgba(52,211,153,0.08)',  colorBorder: 'rgba(52,211,153,0.25)',  colorShadow: 'rgba(52,211,153,0.12)'  },
-    { id: 'idealismo',     nombre: 'Idealismo',    desc: 'La conciencia precede y genera la materia. La realidad es mental en su origen.', color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)',  colorBorder: 'rgba(251,146,60,0.25)',  colorShadow: 'rgba(251,146,60,0.12)'  }
+    { id: 'materialismo', nombre: 'Materialismo', desc: 'La conciencia es producto del cerebro y la materia. Nada más existe.',           color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
+    { id: 'panpsiquismo', nombre: 'Panpsiquismo', desc: 'La conciencia es una propiedad fundamental del universo, no solo del cerebro.',  color: '#C4A8E8', colorBg: 'rgba(196,168,232,0.08)', colorBorder: 'rgba(196,168,232,0.25)', colorShadow: 'rgba(196,168,232,0.12)' },
+    { id: 'dualismo',     nombre: 'Dualismo',     desc: 'Mente y materia son realidades distintas que no se reducen la una a la otra.',   color: '#34D399', colorBg: 'rgba(52,211,153,0.08)',  colorBorder: 'rgba(52,211,153,0.25)',  colorShadow: 'rgba(52,211,153,0.12)'  },
+    { id: 'idealismo',    nombre: 'Idealismo',    desc: 'La conciencia precede y genera la materia. La realidad es mental en su origen.', color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)',  colorBorder: 'rgba(251,146,60,0.25)',  colorShadow: 'rgba(251,146,60,0.12)'  }
   ],
   'debate-tiempo': [
     { id: 'realismo-temporal', nombre: 'Realismo temporal', desc: 'El tiempo es real e independiente de nuestra percepción o experiencia.',        color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
@@ -67,15 +84,15 @@ const PREGUNTAS_EXAMEN = [
 ];
 
 // ── ESTADO ────────────────────────────────────────────────────────────────────
-let debateId   = null; // UUID en Supabase
-let debateSlug = null; // slug para POSTURAS_CONFIG
-let debateTitulo = '';
+let debateId          = null;
+let debateSlug        = null;
+let debateTitulo      = '';
 let posturaSeleccionada = null;
 let posturaIdSupabase   = null;
-let userId       = null;
-let nivelUsuario = 1;
-let citaActiva   = null;
-let respondiendoA = null;
+let userId            = null;
+let nivelUsuario      = 1;
+let citaActiva        = null;
+let respondiendoA     = null;
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function initDebate() {
@@ -110,45 +127,19 @@ async function initDebate() {
   // Verificar si ya participó
   const { data: participante } = await db
     .from('participantes_debate')
-    .select('*, posturas(*)')
+    .select('*')
     .eq('debate_id', debateId)
     .eq('user_id', user.id)
     .single();
 
   if (participante?.aprobado_reglamento) {
-    posturaSeleccionada  = POSTURAS_CONFIG[debateSlug].find(p => p.id === participante.postura_id) || participante.posturas;
-    posturaIdSupabase    = participante.postura_id;
+    posturaIdSupabase   = participante.postura_id;
+    posturaSeleccionada = POSTURAS_CONFIG[debateSlug].find(p => POSTURA_UUID_MAP[p.id] === participante.postura_id);
     mostrarFaseDebate();
     return;
   }
 
-  // Asegurar posturas en BD
-  await asegurarPosturasEnBD();
   renderBurbujas();
-}
-
-// ── ASEGURAR POSTURAS EN BD ───────────────────────────────────────────────────
-async function asegurarPosturasEnBD() {
-  const db = window.__ELO.getClient();
-  const posturas = POSTURAS_CONFIG[debateSlug];
-
-  for (const p of posturas) {
-    const { data: existe } = await db
-      .from('posturas')
-      .select('id')
-      .eq('id', p.id)
-      .single();
-
-    if (!existe) {
-      await db.from('posturas').insert({
-        id:         p.id,
-        debate_id:  debateId,
-        nombre:     p.nombre,
-        descripcion: p.desc,
-        color:      p.color
-      });
-    }
-  }
 }
 
 // ── RENDER BURBUJAS ───────────────────────────────────────────────────────────
@@ -177,6 +168,7 @@ function seleccionarPostura(id) {
   document.querySelectorAll('.debate-burbuja').forEach(b => b.classList.remove('seleccionada'));
   document.getElementById(`burbuja-${id}`).classList.add('seleccionada');
   posturaSeleccionada = POSTURAS_CONFIG[debateSlug].find(p => p.id === id);
+  posturaIdSupabase   = POSTURA_UUID_MAP[id] || null;
   document.getElementById('btn-confirmar').disabled = false;
 }
 
@@ -222,16 +214,17 @@ async function enviarExamen() {
 
   const db = window.__ELO.getClient();
 
-  await db.from('participantes_debate').upsert({
+  const { error } = await db.from('participantes_debate').upsert({
     debate_id:           debateId,
     user_id:             userId,
-    postura_id:          posturaSeleccionada.id,
+    postura_id:          posturaIdSupabase,
     texto_inicial:       posturaSeleccionada.desc,
     aprobado_reglamento: true
   });
 
-  posturaIdSupabase = posturaSeleccionada.id;
-  nota.textContent  = '✦ Aprobado. Entrando al debate...';
+  if (error) { nota.textContent = 'Error al registrar. Intenta de nuevo.'; return; }
+
+  nota.textContent = '✦ Aprobado. Entrando al debate...';
   setTimeout(() => mostrarFaseDebate(), 1000);
 }
 
@@ -239,14 +232,13 @@ async function enviarExamen() {
 function entrarComoEspectador() {
   mostrarFase('fase-debate');
   document.getElementById('debate-input-wrap').style.display = 'none';
-  renderPosturasBar();
-  cargarMensajes();
-  suscribirMensajes();
-
   document.getElementById('debate-tu-postura').innerHTML = `
     <span style="font-size:0.78rem;color:rgba(240,234,214,0.3);font-family:system-ui">Modo espectador</span>
   `;
   document.getElementById('debate-titulo-2').textContent = debateTitulo;
+  renderPosturasBar();
+  cargarMensajes();
+  suscribirMensajes();
 }
 
 // ── MOSTRAR FASE DEBATE ───────────────────────────────────────────────────────
@@ -266,16 +258,17 @@ async function mostrarFaseDebate() {
 
 // ── RENDER POSTURAS BAR ───────────────────────────────────────────────────────
 async function renderPosturasBar() {
-  const db      = window.__ELO.getClient();
+  const db       = window.__ELO.getClient();
   const posturas = POSTURAS_CONFIG[debateSlug];
   const bar      = document.getElementById('debate-posturas-bar');
 
   const chips = await Promise.all(posturas.map(async p => {
+    const uuid = POSTURA_UUID_MAP[p.id];
     const { count } = await db
       .from('participantes_debate')
       .select('*', { count: 'exact', head: true })
       .eq('debate_id', debateId)
-      .eq('postura_id', p.id);
+      .eq('postura_id', uuid);
     return `
       <div class="debate-postura-chip" style="border-color:${p.colorBorder};color:${p.color}">
         <div class="debate-postura-chip-dot" style="background:${p.color}"></div>
@@ -317,7 +310,7 @@ async function renderMensaje(m, esRespuesta) {
   const nombre = m.profiles?.username || 'Anónimo';
   const avatar = m.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${encodeURIComponent(nombre)}&background=2D1F3D&color=C4A8E8`;
   const fecha  = new Date(m.created_at).toLocaleDateString('es-MX', { day: 'numeric', month: 'short' });
-  const postura = POSTURAS_CONFIG[debateSlug]?.find(p => p.id === m.postura_id);
+  const postura = POSTURAS_CONFIG[debateSlug]?.find(p => POSTURA_UUID_MAP[p.id] === m.postura_id);
 
   let respuestasHtml = '';
   if (!esRespuesta) {
@@ -394,7 +387,7 @@ async function enviarMensaje() {
 
   const { error } = await db.from('mensajes_debate').insert({
     debate_id:  debateId,
-    postura_id: posturaIdSupabase || posturaSeleccionada?.id,
+    postura_id: posturaIdSupabase,
     user_id:    userId,
     contenido,
     cita:       citaActiva || null,
