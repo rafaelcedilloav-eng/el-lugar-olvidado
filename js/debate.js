@@ -174,7 +174,8 @@ function seleccionarPostura(id) {
 
 function confirmarPostura() {
   if (!posturaSeleccionada) return;
-  mostrarFase('fase-reglamento');
+  mostrarFase('fase-examen');
+  renderExamen();
 }
 
 // ── RENDER EXAMEN ─────────────────────────────────────────────────────────────
@@ -334,7 +335,7 @@ async function renderMensaje(m, esRespuesta) {
     <div class="debate-mensaje" id="msg-${m.id}">
       <div class="debate-mensaje-header">
         <img class="debate-mensaje-avatar" src="${avatar}" alt="${nombre}">
-        <span class="debate-mensaje-insignia">${icono}</span>
+        <span class="debate-mensaje-insignia insignia-nivel-${nivel}">${icono}</span>
         <span class="debate-mensaje-nombre" ${postura ? `style="color:${postura.color}"` : ''}>${nombre}</span>
         <span class="debate-mensaje-fecha">${fecha}</span>
       </div>
@@ -403,11 +404,11 @@ async function enviarMensaje() {
   const { error } = await db.from('mensajes_debate').insert({
     debate_id:  debateId,
     postura_id: posturaIdSupabase,
-    autor_id:    currentUser.id,
+    user_id:    currentUser.id,
     contenido,
     cita:       citaActiva || null,
     responde_a: respondiendoA || null,
-  
+    tipo:       'debate'
   });
 
   if (btnEnviar) btnEnviar.disabled = false;

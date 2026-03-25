@@ -17,9 +17,7 @@
   <nav class="nav" id="main-nav">
     <a href="index.html" class="nav-logo">El Lugar Olvidado</a>
     <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </div>
     <div class="nav-links" id="nav-links">
       <a href="index.html">Explorar</a>
@@ -33,89 +31,86 @@
 
   <main class="container">
 
-    <!-- ── FASE 1: SELECCIÓN DE POSTURA ── -->
+    <!-- FASE 1: POSTURAS -->
     <section id="fase-posturas" class="debate-fase">
       <div class="debate-fase-header">
         <p class="debate-kicker">Foro de discusión</p>
         <h1 id="debate-titulo" class="debate-titulo">Cargando debate...</h1>
         <p class="debate-sub">Selecciona la postura que defenderás con argumentos. Esta elección es inmutable durante el ciclo del debate.</p>
       </div>
-
-      <div class="debate-burbujas-grid" id="debate-burbujas"></div>
-
-      <div class="debate-confirmar-wrap">
-        <button class="debate-confirmar-btn" id="btn-confirmar" disabled onclick="confirmarPostura()">
+      <div id="debate-burbujas" class="debate-burbujas-grid"></div>
+      <div class="debate-actions-wrap">
+        <button type="button" class="btn-espectador" onclick="entrarComoEspectador()">
+          Entrar como espectador <span class="muted">(Solo lectura)</span>
+        </button>
+        <button id="btn-confirmar" class="debate-confirmar-btn" disabled onclick="confirmarPostura()">
           Esta es mi postura
         </button>
       </div>
     </section>
 
-    <!-- ── FASE 1.5: REGLAMENTO ── -->
-<section id="fase-reglamento" class="debate-fase oculto">
-  <div class="debate-fase-header">
-    <p class="debate-kicker">Antes de continuar</p>
-    <h2 class="debate-titulo" style="font-size:clamp(1.4rem,3vw,2rem)">Reglamento del Debate</h2>
-  </div>
-  <div class="debate-reglamento-lista">
-    <div class="reglamento-item">
-      <span class="reglamento-num">01</span>
-      <p>Al responder el argumento de otro participante, <strong>debes citar el fragmento específico</strong> al que respondes.</p>
-    </div>
-    <div class="reglamento-item">
-      <span class="reglamento-num">02</span>
-      <p>El lenguaje irrespetuoso o los insultos resultan en <strong>mute automático</strong>. A la 4ta infracción, el mute es permanente.</p>
-    </div>
-    <div class="reglamento-item">
-      <span class="reglamento-num">03</span>
-      <p>Si deseas cambiar de postura, debes <strong>escribir una explicación de al menos 200 caracteres</strong> justificando el cambio.</p>
-    </div>
-    <div class="reglamento-item">
-      <span class="reglamento-num">04</span>
-      <p>El propósito del debate es <strong>defender y refinar una postura con argumentos genuinos</strong>, no ganar a toda costa.</p>
-    </div>
-    <div class="reglamento-item">
-      <span class="reglamento-num">05</span>
-      <p>Si 3 participantes consecutivos del mismo lado no responden en su turno, se <strong>declara victoria para la postura contraria</strong>.</p>
-    </div>
-  </div>
-  <div class="debate-confirmar-wrap">
-    <button class="debate-confirmar-btn" onclick="mostrarFase('fase-examen'); renderExamen()">
-      Entendido — Presentar examen
-    </button>
-  </div>
-</section>
+    <!-- FASE 1.5: REGLAMENTO -->
+    <section id="fase-reglamento" class="debate-fase oculto">
+      <div class="debate-fase-header">
+        <p class="debate-kicker">Antes de continuar</p>
+        <h2 class="debate-titulo" style="font-size:clamp(1.4rem,3vw,2rem)">El Pacto del Foro</h2>
+        <p class="debate-sub">Lee con atención. Serás evaluado sobre estas reglas.</p>
+      </div>
+      <div class="reglamento-card">
+        <div class="regla-item">
+          <span class="regla-num">01</span>
+          <p>Al responder el argumento de otro participante, <strong>debes citar el fragmento específico</strong> al que respondes.</p>
+        </div>
+        <div class="regla-item">
+          <span class="regla-num">02</span>
+          <p>El lenguaje irrespetuoso o los insultos resultan en <strong>mute automático</strong>. A la 4ta infracción, el mute es permanente.</p>
+        </div>
+        <div class="regla-item">
+          <span class="regla-num">03</span>
+          <p>Si deseas cambiar de postura, debes <strong>escribir una explicación de al menos 200 caracteres</strong> justificando el cambio.</p>
+        </div>
+        <div class="regla-item">
+          <span class="regla-num">04</span>
+          <p>El propósito del debate es <strong>defender y refinar una postura con argumentos genuinos</strong>, no ganar a toda costa.</p>
+        </div>
+        <div class="regla-item">
+          <span class="regla-num">05</span>
+          <p>Si 3 participantes consecutivos del mismo lado no responden en su turno, se <strong>declara victoria para la postura contraria</strong>.</p>
+        </div>
+      </div>
+      <div class="debate-confirmar-wrap">
+        <button class="debate-confirmar-btn" onclick="mostrarFase('fase-examen'); renderExamen()">
+          Entendido — Presentar examen
+        </button>
+      </div>
+    </section>
 
-    <!-- ── FASE 2: EXAMEN DE REGLAMENTO ── -->
+    <!-- FASE 2: EXAMEN -->
     <section id="fase-examen" class="debate-fase oculto">
       <div class="debate-fase-header">
         <p class="debate-kicker">Antes de debatir</p>
         <h2 class="debate-titulo" style="font-size:clamp(1.4rem,3vw,2rem)">Examen de Reglamento</h2>
         <p class="debate-sub">Responde correctamente al menos 4 de 5 preguntas para ingresar al debate.</p>
       </div>
-
       <div id="examen-preguntas" class="examen-preguntas"></div>
-
       <div class="debate-confirmar-wrap">
         <p class="examen-nota" id="examen-nota"></p>
         <button class="debate-confirmar-btn" onclick="enviarExamen()">
-          Enviar respuestas
+          Firmar y Entrar
         </button>
       </div>
     </section>
 
-    <!-- ── FASE 3: DEBATE ── -->
+    <!-- FASE 3: DEBATE -->
     <section id="fase-debate" class="debate-fase oculto">
       <div class="debate-header-compact">
-        <h2 id="debate-titulo-2" class="debate-titulo-sm">Título del Debate</h2>
+        <h2 id="debate-titulo-2" class="debate-titulo-sm"></h2>
         <div id="debate-tu-postura" class="debate-badge-postura"></div>
       </div>
-
       <div id="debate-posturas-bar" class="debate-posturas-bar"></div>
-
       <div class="debate-mensajes-wrapper">
         <div id="debate-mensajes" class="debate-mensajes"></div>
       </div>
-
       <div class="debate-input-area" id="debate-input-wrap">
         <div class="debate-input-container">
           <div id="debate-cita-preview" class="debate-cita-preview oculto">
@@ -125,14 +120,8 @@
             </div>
             <button class="cita-close" onclick="cancelarCita()">✕</button>
           </div>
-
           <div class="debate-input-row">
-            <textarea
-              id="debate-input"
-              class="debate-textarea"
-              placeholder="Forja tu argumento..."
-              rows="1"
-            ></textarea>
+            <textarea id="debate-input" class="debate-textarea" placeholder="Forja tu argumento..." rows="1"></textarea>
             <button id="btn-enviar" class="debate-enviar-btn" onclick="enviarMensaje()">
               <svg viewBox="0 0 24 24" width="20" height="20">
                 <path fill="currentColor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
@@ -161,8 +150,7 @@
   <script src="js/debate.js"></script>
   <script>
     function toggleMenu() {
-      const nav = document.getElementById('nav-links');
-      nav.classList.toggle('active');
+      document.getElementById('nav-links').classList.toggle('active');
     }
   </script>
 </body>
