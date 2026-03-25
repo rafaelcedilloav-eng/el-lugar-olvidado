@@ -20,21 +20,26 @@
 
   <!-- NAVEGACIÓN -->
   <nav class="nav" id="main-nav">
-    <div class="nav-logo">El Lugar Olvidado</div>
-    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-    <div class="nav-links" id="nav-links">
-  <a href="index.html">Explorar</a>
-  <a href="ensayos.html">Ensayos</a>
-  <a href="foro.html">Foro</a>
-  <a href="manifiesto.html">Manifiesto</a>
-  <a href="autor.html">Sobre el autor</a>
-  <a href="perfil.html" class="nav-perfil" id="nav-user">Mi perfil</a>
-</div>
-  </nav>
+  <div class="nav-logo">El Lugar Olvidado</div>
+  <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="nav-links" id="nav-links">
+    <a href="index.html">Explorar</a>
+    <a href="ensayos.html">Ensayos</a>
+    <a href="foro.html">Foro</a>
+    <a href="manifiesto.html">Manifiesto</a>
+    <a href="autor.html">Sobre el autor</a>
+
+    <span id="user-name" style="color: var(--accent); font-weight: bold; margin: 0 12px; font-size: 0.9em;"></span>
+    <a href="#" id="auth-button">Entrar</a>
+
+    <a href="perfil.html" class="nav-perfil" id="nav-user">Mi perfil</a>
+  </div>
+</nav>
 
   <!-- HERO -->
   <section class="hero">
