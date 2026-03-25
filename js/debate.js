@@ -1,4 +1,4 @@
-// ── Debate — El Lugar Olvidado
+// ── Debate — El Lugar Olvidado (Versión 2.1 - Sincronizada)
 
 const DEBATE_UUID_MAP = {
   'debate-libre-albedrio': '0fd5b9a3-c8cb-459d-9e2f-e7791b8d21e1',
@@ -110,8 +110,14 @@ async function initDebate() {
   if (!user) return;
   userId = user.id;
 
+  // FIX: maybeSingle() para evitar error 406 si el perfil es nuevo
   const { data: profile } = await db.from('profiles').select('nivel').eq('id', user.id).maybeSingle();
   nivelUsuario = profile?.nivel || 1;
+
+  if (nivelUsuario === 0) {
+    activarProtocoloBufon();
+    return;
+  }
 
   const titulos = {
     'debate-libre-albedrio': 'El Libre Albedrío No Es Libertad — Es un Costo',
@@ -124,7 +130,7 @@ async function initDebate() {
   document.getElementById('debate-titulo').textContent   = debateTitulo;
   document.getElementById('debate-titulo-2').textContent = debateTitulo;
 
-  // Verificar si ya participó (USANDO .maybeSingle() PARA EVITAR ERROR 406)
+  // Verificar participación con maybeSingle()
   const { data: participante, error: partError } = await db
     .from('participantes_debate')
     .select('*')
@@ -201,7 +207,7 @@ function renderExamen() {
   `).join('');
 }
 
-// ── ENVIAR EXAMEN ─────────────────────────────────────────────────────────────
+// ── ENVIAR EXAMEN (DUAL TABLE INSERT) ─────────────────────────────────────────
 async function enviarExamen() {
   const nota = document.getElementById('examen-nota');
   let correctas = 0;
@@ -219,7 +225,21 @@ async function enviarExamen() {
 
   const db = window.__ELO.getClient();
 
-  const { error } = await db.from('participantes_debate').upsert({
+  // 1. Guardar en tabla historial de exámenes
+  const { error: errorExamen } = await db.from('examenes_reglamento').insert({
+    user_id: userId,
+    puntaje: correctas,
+    aprobado: true
+  });
+
+  if (errorExamen) {
+    console.error('Error en examenes_reglamento:', errorExamen);
+    nota.textContent = 'Error al registrar examen.';
+    return;
+  }
+
+  // 2. Registrar como participante oficial
+  const { error: errorPart } = await db.from('participantes_debate').upsert({
     debate_id:           debateId,
     user_id:             userId,
     postura_id:          posturaIdSupabase,
@@ -227,7 +247,11 @@ async function enviarExamen() {
     aprobado_reglamento: true
   });
 
-  if (error) { nota.textContent = 'Error al registrar. Intenta de nuevo.'; return; }
+  if (errorPart) {
+    console.error('Error en participantes_debate:', errorPart);
+    nota.textContent = 'Error al registrar participación.';
+    return;
+  }
 
   nota.textContent = '✦ Aprobado. Entrando al debate...';
   setTimeout(() => mostrarFaseDebate(), 1000);
@@ -285,15 +309,10 @@ async function renderPosturasBar() {
   bar.innerHTML = chips.join('');
 }
 
-// ── CARGAR MENSAJES ───────────────────────────────────────────────────────────
+// ── CARGAR MENSAJES (FAILSAFE + REFRESH) ──────────────────────────────────────
 async function cargarMensajes() {
   const contenedor = document.getElementById('debate-mensajes');
-  
-  // FAILSAFE DE CONTENEDOR: Si no existe, abortamos antes de consumir recursos
-  if (!contenedor) {
-    console.error("CRÍTICO: No se encontró el contenedor 'debate-mensajes' en el DOM.");
-    return;
-  }
+  if (!contenedor) return;
 
   const db = window.__ELO.getClient();
 
@@ -303,7 +322,7 @@ async function cargarMensajes() {
     .eq('debate_id', debateId)
     .is('responde_a', null)
     .order('created_at', { ascending: true });
-    
+
   if (error) {
     console.error("Error cargando mensajes:", error);
     return;
@@ -393,44 +412,53 @@ document.addEventListener('mouseup', () => {
   }
 });
 
-// ── ENVIAR MENSAJE ────────────────────────────────────────────────────────────
+// ── ENVIAR MENSAJE (AUTOR_ID + HONEYPOT) ──────────────────────────────────────
 async function enviarMensaje() {
   const input     = document.getElementById('debate-input');
   const contenido = input.value.trim();
   if (!contenido) return;
 
   const db = window.__ELO.getClient();
+  const { data: { user } } = await db.auth.getUser();
+  if (!user) return;
 
-  const { data: { user: currentUser } } = await db.auth.getUser();
-  if (!currentUser) return;
-
-  // Bloquear input mientras se procesa para prevenir spam/múltiples clicks
   input.disabled = true;
 
   const { error } = await db.from('mensajes_debate').insert({
     debate_id:  debateId,
     postura_id: posturaIdSupabase,
-    autor_id:   currentUser.id, // FIX CRÍTICO: Debe ser autor_id para pasar las reglas RLS
+    autor_id:   user.id, // Sincronizado con esquema Senior
     contenido:  contenido,
     cita:       citaActiva || null,
     responde_a: respondiendoA || null,
     tipo:       'debate'
   });
 
-  input.disabled = false;
-
-  if (error) { 
-    console.error('Error enviando mensaje:', error); 
-    alert("Hubo un error al publicar tu mensaje. Verifica tu conexión.");
-    return; 
+  if (error) {
+    console.error('Error enviando mensaje:', error);
+    if (error.code === '42501') { // VIOLACIÓN DE RLS
+       await db.rpc('marcar_bufon_manual', { target_user_id: user.id });
+       activarProtocoloBufon();
+    } else {
+       alert("Fallo en la comunicación con el servidor.");
+    }
+    input.disabled = false;
+    return;
   }
 
   input.value = '';
+  input.disabled = false;
   quitarCita();
-  respondiendoA = null;
+  await cargarMensajes(); // Feedback inmediato
+}
 
-  // FIX DE UX: Forzamos el renderizado inmediato para el autor. Cero latencia visual.
-  await cargarMensajes();
+// ── PROTOCOLO EL BUFÓN ────────────────────────────────────────────────────────
+function activarProtocoloBufon() {
+  const modal = document.getElementById('bufon-modal');
+  if (modal) modal.classList.remove('oculto');
+  
+  const inputWrap = document.getElementById('debate-input-wrap');
+  if (inputWrap) inputWrap.innerHTML = '<p style="color:#444; font-style:italic; padding: 20px;">Tu voz ha sido silenciada permanentemente.</p>';
 }
 
 // ── REALTIME ──────────────────────────────────────────────────────────────────
