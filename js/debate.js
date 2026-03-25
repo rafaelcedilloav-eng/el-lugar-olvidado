@@ -386,6 +386,9 @@ async function enviarMensaje() {
 
   const db = window.__ELO.getClient();
 
+  const { data: { user: currentUser } } = await db.auth.getUser();
+if (!currentUser) return;
+
   const { error } = await db.from('mensajes_debate').insert({
     debate_id:  debateId,
     postura_id: posturaIdSupabase,
