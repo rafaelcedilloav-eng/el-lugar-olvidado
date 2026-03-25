@@ -1,9 +1,9 @@
 /**
- * RAFA OS - Module: Debate Engine v3.0
- * Status: Bulletproof / Debug Mode Active
+ * RAFA OS - Module: Debate Engine v4.0
+ * Status: Production Ready / Race-Condition Fix
  */
 
-// ── CONFIG (Asegúrate de que los Slugs coincidan con la URL) ─────────────────
+// ── CONFIGURACIÓN COMPLETA ───────────────────────────────────────────────────
 const DEBATE_UUID_MAP = {
   'debate-libre-albedrio': '0fd5b9a3-c8cb-459d-9e2f-e7791b8d21e1',
   'debate-moral':          '4cc14c5f-98a2-4e5d-b282-0dc07a56b5f5',
@@ -31,63 +31,73 @@ const POSTURAS_CONFIG = {
   ],
   'debate-moral': [
     { id: 'relativismo', nombre: 'Relativismo', desc: 'La moral es cultural y contextual.', color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)', colorBorder: 'rgba(96,165,250,0.25)' },
-    { id: 'universalismo', nombre: 'Universalismo', desc: 'Principios morales válidos para todos.', color: '#C4A8E8', colorBg: 'rgba(196,168,232,0.08)', colorBorder: 'rgba(196,168,232,0.25)' }
+    { id: 'universalismo', nombre: 'Universalismo', desc: 'Principios morales válidos para todos.', color: '#C4A8E8', colorBg: 'rgba(196,168,232,0.08)', colorBorder: 'rgba(196,168,232,0.25)' },
+    { id: 'construccionismo', nombre: 'Construccionismo', desc: 'La moral se construye colectivamente.', color: '#34D399', colorBg: 'rgba(52,211,153,0.08)', colorBorder: 'rgba(52,211,153,0.25)' },
+    { id: 'nihilismo-moral', nombre: 'Nihilismo moral', desc: 'La moral no tiene fundamento objetivo.', color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)', colorBorder: 'rgba(251,146,60,0.25)' }
   ]
 };
 
 const state = {
-  user: null, db: window.__ELO?.getClient(),
-  debateSlug: null, debateId: null, posturaId: null, posturaObj: null
+  db: null, user: null, debateSlug: null, debateId: null, posturaId: null, posturaObj: null
 };
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
-async function initDebate() {
-  console.log("🚀 [Rafa OS] Iniciando...");
+// ── SISTEMA DE ARRANQUE SEGURO ───────────────────────────────────────────────
+function safeInit() {
+    console.log("⏳ [Rafa OS] Buscando conexión con Supabase...");
+    
+    const checkInterval = setInterval(() => {
+        if (window.__ELO && typeof window.__ELO.getClient === 'function') {
+            state.db = window.__ELO.getClient();
+            if (state.db) {
+                clearInterval(checkInterval);
+                console.log("✅ [Rafa OS] Conexión establecida. Arrancando motor...");
+                initDebate();
+            }
+        }
+    }, 100); // Intenta cada 100ms
+}
 
+async function initDebate() {
   const params = new URLSearchParams(window.location.search);
   state.debateSlug = params.get('id');
   state.debateId = DEBATE_UUID_MAP[state.debateSlug];
 
-  console.log("Debate Slug:", state.debateSlug);
-  console.log("Debate ID:", state.debateId);
-
-  if (!state.debateId) return console.error("❌ Error: Debate ID no encontrado para este slug.");
+  if (!state.debateId) return console.error("❌ Slug no válido:", state.debateSlug);
 
   const { data: { user } } = await state.db.auth.getUser();
-  if (!user) return console.warn("⚠️ No hay usuario logueado.");
+  if (!user) return console.warn("⚠️ Usuario no autenticado.");
   state.user = user;
 
-  // Título
-  const elTitulo = document.getElementById('debate-titulo');
-  if (elTitulo) elTitulo.textContent = state.debateSlug.replace(/-/g, ' ');
+  // Pintar Título
+  const txt = state.debateSlug.replace(/-/g, ' ').toUpperCase();
+  ['debate-titulo', 'debate-titulo-2'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = txt;
+  });
 
-  // Verificar si ya participa
   const { data: part } = await state.db.from('participantes_debate').select('*').eq('debate_id', state.debateId).eq('user_id', user.id).maybeSingle();
 
   if (part?.aprobado_reglamento) {
-    console.log("✅ Usuario ya es participante.");
     state.posturaId = part.postura_id;
     mostrarFase('fase-debate');
     cargarMensajes();
   } else {
-    console.log("🎨 Renderizando burbujas...");
-    mostrarFase('fase-posturas'); 
-    renderBurbujas();
+    // FIX FINAL: Forzamos la visibilidad de la sección correcta
+    const fasePosturas = document.getElementById('fase-posturas');
+    if (fasePosturas) {
+        mostrarFase('fase-posturas');
+        renderBurbujas();
+    } else {
+        console.error("❌ ERROR: No se encontró el ID 'fase-posturas' en el HTML.");
+    }
   }
 }
 
 function renderBurbujas() {
-  const container = document.getElementById('debate-burbujas');
-  if (!container) return console.error("❌ Error: No existe el div con id='debate-burbujas'");
+  const container = document.getElementById('debate-burbujas') || document.querySelector('.debate-burbujas-grid');
+  if (!container) return;
 
   const posturas = POSTURAS_CONFIG[state.debateSlug] || [];
-  console.log("Posturas a renderizar:", posturas);
-
-  if (posturas.length === 0) {
-    container.innerHTML = "<p style='color:red'>Error: No hay configuradas posturas para este debate.</p>";
-    return;
-  }
-
   container.innerHTML = posturas.map(p => `
     <div class="debate-burbuja" onclick="seleccionarPostura('${p.id}')" id="burbuja-${p.id}" style="--color-burbuja:${p.colorBg};--color-burbuja-border:${p.colorBorder}">
       <div class="debate-burbuja-check">✓</div>
@@ -95,7 +105,7 @@ function renderBurbujas() {
     </div>
   `).join('') + `
     <div style="grid-column: 1/-1; display:flex; justify-content:center; margin-top:20px;">
-        <button id="btn-confirmar" class="debate-confirmar-btn" disabled onclick="alert('Postura seleccionada!')">Confirmar Postura</button>
+        <button id="btn-confirmar" class="debate-confirmar-btn" disabled onclick="alert('Postura fijada. Iniciando examen...')">Confirmar Postura</button>
     </div>
   `;
 }
@@ -103,25 +113,20 @@ function renderBurbujas() {
 function seleccionarPostura(id) {
   document.querySelectorAll('.debate-burbuja').forEach(b => b.classList.toggle('seleccionada', b.id === `burbuja-${id}`));
   state.posturaId = POSTURA_UUID_MAP[id];
-  document.getElementById('btn-confirmar').disabled = false;
-  console.log("Seleccionada:", id);
+  const btn = document.getElementById('btn-confirmar');
+  if (btn) btn.disabled = false;
 }
 
 function mostrarFase(faseId) {
-  console.log("Cambiando a fase:", faseId);
   document.querySelectorAll('.debate-fase').forEach(f => f.classList.add('oculto'));
   const target = document.getElementById(faseId);
-  if (target) {
-    target.classList.remove('oculto');
-  } else {
-    console.error(`❌ Error: No se encontró la sección con id='${faseId}'`);
-  }
+  if (target) target.classList.remove('oculto');
 }
 
-// Cargar mensajes básico para que no rompa
 async function cargarMensajes() {
     const container = document.getElementById('debate-mensajes');
-    if (container) container.innerHTML = "Cargando mensajes...";
+    if (container) container.innerHTML = "<p style='color:gray'>Cargando la conversación...</p>";
 }
 
-document.addEventListener('DOMContentLoaded', initDebate);
+// Arrancamos con el sistema de espera
+safeInit();
