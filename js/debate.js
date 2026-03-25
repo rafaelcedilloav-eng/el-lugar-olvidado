@@ -1,9 +1,4 @@
-/**
- * RAFA OS - Module: Debate Engine vFinal
- * Status: Production Ready / Full Integration
- */
-
-// ── 1. CONFIGURACIÓN Y MAPAS DE DATOS ────────────────────────────────────────
+// ── CONFIGURACIÓN ORIGINAL ──
 const DEBATE_UUID_MAP = {
   'debate-libre-albedrio': '0fd5b9a3-c8cb-459d-9e2f-e7791b8d21e1',
   'debate-moral':          '4cc14c5f-98a2-4e5d-b282-0dc07a56b5f5',
@@ -50,23 +45,17 @@ const POSTURAS_CONFIG = {
 };
 
 const PREGUNTAS_EXAMEN = [
-  { texto: '¿Qué debes hacer al responder un argumento?', opciones: ['Ignorar', 'Citar fragmento', 'Resumir', 'Preguntar'], correcta: 1 },
-  { texto: '¿Cuántas infracciones resultan en silencio permanente?', opciones: ['2', '3', '4', '5'], correcta: 2 },
-  { texto: '¿Propósito principal de este foro?', opciones: ['Ganar', 'Burlarse', 'Defender argumentos', 'Acumular mensajes'], correcta: 2 }
+  { texto: '¿Qué debes hacer al responder un argumento?', opciones: ['Ignorar', 'Citar fragmento', 'Resumir'], correcta: 1 },
+  { texto: '¿Castigo por Ad Hominem (atacar a la persona)?', opciones: ['Advertencia', 'Silencio permanente'], correcta: 1 }
 ];
 
-const NIVELES_ICONOS = ['🎭','🕯️','📖','⚡','🏛️','🔥','🪶','⚗️','🌀','👁️','🜂'];
-
-// ── 2. ESTADO GLOBAL (STATE) ─────────────────────────────────────────────────
 const state = {
-  db: null, user: null, profile: null,
-  debateSlug: null, debateId: null, posturaId: null, posturaObj: null,
+  db: null, user: null, debateSlug: null, debateId: null, posturaId: null, posturaObj: null,
   cita: { id: null, texto: null }
 };
 
-// ── 3. ARRANQUE SEGURO (ANTI RACE-CONDITIONS) ────────────────────────────────
+// ── INICIALIZACIÓN ──
 function safeInit() {
-    console.log("⏳ [Rafa OS] Conectando a Supabase...");
     const checkInterval = setInterval(() => {
         if (window.__ELO && typeof window.__ELO.getClient === 'function') {
             state.db = window.__ELO.getClient();
@@ -78,70 +67,47 @@ function safeInit() {
     }, 100);
 }
 
-// ── 4. LÓGICA PRINCIPAL ──────────────────────────────────────────────────────
 async function initDebate() {
   const params = new URLSearchParams(window.location.search);
   state.debateSlug = params.get('id');
   state.debateId = DEBATE_UUID_MAP[state.debateSlug];
 
-  if (!state.debateId) return console.error("[Rafa OS] Slug de debate inválido.");
+  if (!state.debateId) return;
 
   const { data: { user } } = await state.db.auth.getUser();
-  if (!user) return console.warn("[Rafa OS] Usuario no autenticado.");
+  if (!user) {
+    window.location.href = 'login.html';
+    return;
+  }
   state.user = user;
 
-  // Revisar perfil para Protocolo Bufón
-  const profile = await query(state.db.from('profiles').select('nivel').eq('id', user.id).maybeSingle());
-  state.profile = profile;
-  if (profile?.nivel === 0) return activarProtocoloBufon();
-
-  // Títulos
-  const txt = state.debateSlug.replace(/-/g, ' ').toUpperCase();
+  const titulos = { 'debate-libre-albedrio': 'EL LIBRE ALBEDRÍO', 'debate-moral': 'LA MORAL', 'debate-conciencia': 'LA CONCIENCIA', 'debate-tiempo': 'EL TIEMPO' };
+  const txt = titulos[state.debateSlug] || 'DEBATE';
   ['debate-titulo', 'debate-titulo-2'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.textContent = txt;
   });
 
-  // Verificar si ya es participante
-  const part = await query(state.db.from('participantes_debate').select('*').eq('debate_id', state.debateId).eq('user_id', user.id).maybeSingle());
+  const { data: part } = await state.db.from('participantes_debate').select('*').eq('debate_id', state.debateId).eq('user_id', user.id).maybeSingle();
 
   if (part?.aprobado_reglamento) {
-    // YA PARTICIPA -> Cargar Chat
     state.posturaId = part.postura_id;
-    const config = POSTURAS_CONFIG[state.debateSlug] || [];
-    state.posturaObj = config.find(p => POSTURA_UUID_MAP[p.id] === part.postura_id);
+    state.posturaObj = POSTURAS_CONFIG[state.debateSlug].find(p => POSTURA_UUID_MAP[p.id] === part.postura_id);
     mostrarFaseDebate();
   } else {
-    // NUEVO -> Cargar Selección de Posturas
     mostrarFase('fase-posturas');
     renderBurbujas();
   }
 }
 
-async function query(promise) {
-  const { data, error } = await promise;
-  if (error) {
-    console.error(`[DB Error]:`, error);
-    if (error.code === '42501') { 
-        await state.db.rpc('marcar_bufon_manual', { target_user_id: state.user.id }); 
-        activarProtocoloBufon(); 
-    }
-    return null;
-  }
-  return data;
-}
-
-// ── 5. RENDERIZADO DE FASES ──────────────────────────────────────────────────
+// ── FASE 1: BURBUJAS ──
 function mostrarFase(faseId) {
   document.querySelectorAll('.debate-fase').forEach(f => f.classList.add('oculto'));
-  const target = document.getElementById(faseId);
-  if (target) target.classList.remove('oculto');
+  document.getElementById(faseId).classList.remove('oculto');
 }
 
 function renderBurbujas() {
   const container = document.getElementById('debate-burbujas');
-  if (!container) return;
-
   const posturas = POSTURAS_CONFIG[state.debateSlug] || [];
   container.innerHTML = posturas.map(p => `
     <div class="debate-burbuja" onclick="seleccionarPostura('${p.id}')" id="burbuja-${p.id}" style="--color-burbuja:${p.colorBg};--color-burbuja-border:${p.colorBorder}">
@@ -150,7 +116,7 @@ function renderBurbujas() {
     </div>
   `).join('') + `
     <div style="grid-column: 1/-1; display:flex; justify-content:center; margin-top:20px;">
-        <button id="btn-confirmar" class="debate-confirmar-btn" disabled onclick="prepararExamen()">Confirmar Postura</button>
+        <button id="btn-confirmar" class="debate-confirmar-btn" disabled onclick="prepararExamen()">Esta es mi postura</button>
     </div>
   `;
 }
@@ -162,6 +128,7 @@ function seleccionarPostura(id) {
   document.getElementById('btn-confirmar').disabled = false;
 }
 
+// ── FASE 2: EXAMEN ──
 function prepararExamen() {
   mostrarFase('fase-examen');
   const container = document.getElementById('examen-preguntas');
@@ -178,116 +145,57 @@ function prepararExamen() {
 async function enviarExamen() {
   const nota = document.getElementById('examen-nota');
   const rtas = PREGUNTAS_EXAMEN.map((_, i) => document.querySelector(`input[name="pregunta-${i}"]:checked`)?.value);
-  
   if (rtas.includes(undefined)) return nota.textContent = 'Responde todas las preguntas.';
+  
   const correctas = rtas.filter((r, i) => parseInt(r) === PREGUNTAS_EXAMEN[i].correcta).length;
+  if (correctas < 2) return nota.textContent = 'Respuestas incorrectas. Repasa el reglamento.';
 
-  if (correctas < 3) return nota.textContent = `${correctas}/3. Repasa el reglamento.`;
-
-  // Guardar en Supabase
-  await query(state.db.from('examenes_reglamento').insert({ user_id: state.user.id, puntaje: correctas, aprobado: true }));
-  await query(state.db.from('participantes_debate').upsert({ 
-      debate_id: state.debateId, 
-      user_id: state.user.id, 
-      postura_id: state.posturaId, 
-      texto_inicial: state.posturaObj.desc, 
-      aprobado_reglamento: true 
-  }));
-
-  nota.textContent = 'Acceso concedido...';
-  setTimeout(() => mostrarFaseDebate(), 1000);
+  await state.db.from('participantes_debate').upsert({ debate_id: state.debateId, user_id: state.user.id, postura_id: state.posturaId, texto_inicial: state.posturaObj.desc, aprobado_reglamento: true });
+  mostrarFaseDebate();
 }
 
-// ── 6. CHAT Y REALTIME ───────────────────────────────────────────────────────
+// ── FASE 3: CHAT ──
 async function mostrarFaseDebate() {
   mostrarFase('fase-debate');
-  
-  const tuPosturaEl = document.getElementById('debate-tu-postura');
-  if (tuPosturaEl && state.posturaObj) {
-      tuPosturaEl.innerHTML = `<div class="debate-tu-postura-dot" style="width:12px; height:12px; border-radius:50%; background:${state.posturaObj.color}; box-shadow: 0 0 10px ${state.posturaObj.color}"></div>
-      Postura: <strong style="color:${state.posturaObj.color}">${state.posturaObj.nombre}</strong>`;
-  }
-  
+  document.getElementById('debate-tu-postura').innerHTML = `<div style="width:12px; height:12px; border-radius:50%; background:${state.posturaObj.color}; box-shadow: 0 0 10px ${state.posturaObj.color}"></div> <strong style="color:${state.posturaObj.color}; margin-left:8px;">${state.posturaObj.nombre}</strong>`;
   await cargarMensajes();
-  
-  // Realtime
-  state.db.channel(`debate-${state.debateId}`)
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensajes_debate', filter: `debate_id=eq.${state.debateId}` }, () => cargarMensajes())
-    .subscribe();
+  state.db.channel(`debate-${state.debateId}`).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'mensajes_debate', filter: `debate_id=eq.${state.debateId}` }, () => cargarMensajes()).subscribe();
 }
 
 async function cargarMensajes() {
   const container = document.getElementById('debate-mensajes');
-  if (!container) return;
-
-  const mensajes = await query(state.db.from('mensajes_debate')
-    .select('*, profiles(username, avatar_url, nivel)')
-    .eq('debate_id', state.debateId)
-    .is('responde_a', null)
-    .order('created_at', { ascending: true }));
+  const { data: mensajes } = await state.db.from('mensajes_debate').select('*, profiles(username, avatar_url)').eq('debate_id', state.debateId).is('responde_a', null).order('created_at', { ascending: true });
   
-  if (!mensajes || mensajes.length === 0) {
-      container.innerHTML = `<div class="debate-vacio" style="text-align:center; padding: 40px; color: gray;">Sé el primero en forjar un argumento.</div>`;
-      return;
-  }
-  
-  container.innerHTML = (await Promise.all(mensajes.map(m => renderMensaje(m, false)))).join('');
+  if (!mensajes || mensajes.length === 0) return container.innerHTML = `<div style="text-align:center; color:gray;">Sé el primero en hablar.</div>`;
+  container.innerHTML = mensajes.map(m => {
+      const avatar = m.profiles?.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${m.profiles?.username || 'User'}`;
+      return `
+      <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05);">
+        <div style="display:flex; align-items:center; gap: 10px; margin-bottom: 10px;">
+          <img src="${avatar}" style="width:30px; height:30px; border-radius:50%;">
+          <strong style="color:#fff;">${m.profiles?.username || 'Anónimo'}</strong>
+        </div>
+        ${m.cita ? `<p style="font-style:italic; border-left: 3px solid #C4A8E8; padding-left: 10px; color: #aaa; margin-bottom: 10px;">"${m.cita}"</p>` : ''}
+        <p style="line-height: 1.5;">${m.contenido}</p>
+        <button onclick="responderA('${m.id}', '${m.contenido.replace(/'/g, "\\'")}')" style="background:none; border:none; color:var(--accent); cursor:pointer; margin-top:10px;">Responder</button>
+      </div>`;
+  }).join('');
   container.scrollTop = container.scrollHeight;
-}
-
-async function renderMensaje(m, esResp) {
-  const p = m.profiles || {};
-  const config = POSTURAS_CONFIG[state.debateSlug] || [];
-  const postura = config.find(pos => POSTURA_UUID_MAP[pos.id] === m.postura_id);
-  const avatar = p.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${p.username || m.autor_id}`;
-  
-  let subHtml = '';
-  if (!esResp) {
-    const resps = await query(state.db.from('mensajes_debate').select('*, profiles(username, avatar_url, nivel)').eq('responde_a', m.id).order('created_at', { ascending: true }));
-    if (resps?.length) subHtml = `<div class="debate-respuestas" style="margin-left: 40px; border-left: 2px solid rgba(255,255,255,0.1); padding-left: 15px; margin-top: 10px;">${(await Promise.all(resps.map(r => renderMensaje(r, true)))).join('')}</div>`;
-  }
-
-  return `
-    <div class="debate-mensaje ${esResp ? 'es-respuesta' : ''}" style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05);">
-      <div class="debate-mensaje-header" style="display:flex; align-items:center; gap: 10px; margin-bottom: 10px;">
-        <img class="debate-mensaje-avatar" src="${avatar}" style="width:30px; height:30px; border-radius:50%;">
-        <span class="debate-mensaje-insignia">${NIVELES_ICONOS[p.nivel] || '🕯️'}</span>
-        <span class="debate-mensaje-nombre" style="color:${postura?.color || '#fff'}; font-weight:bold;">${p.username || 'Usuario'}</span>
-      </div>
-      ${m.cita ? `<p class="debate-mensaje-cita" style="font-style:italic; border-left: 3px solid #C4A8E8; padding-left: 10px; color: #aaa; margin-bottom: 10px;">"${m.cita}"</p>` : ''}
-      <p class="debate-mensaje-contenido" style="line-height: 1.5;">${m.contenido}</p>
-      ${!esResp ? `<button class="debate-mensaje-btn" onclick="responderA('${m.id}', '${m.contenido.replace(/'/g, "\\'")}')" style="background:none; border:none; color:var(--accent); cursor:pointer; margin-top:10px; font-size: 0.85rem;">Responder</button>` : ''}
-    </div>${subHtml}`;
 }
 
 async function enviarMensaje() {
   const input = document.getElementById('debate-input');
   const contenido = input.value.trim();
-  if (!contenido || input.disabled) return;
-
+  if (!contenido) return;
   input.disabled = true;
-  const success = await query(state.db.from('mensajes_debate').insert({
-    debate_id: state.debateId, 
-    postura_id: state.posturaId, 
-    autor_id: state.user.id,
-    contenido, 
-    cita: state.cita.texto, 
-    responde_a: state.cita.id
-  }));
-
-  if (success) { 
-      input.value = ''; 
-      quitarCita(); 
-      await cargarMensajes(); 
-  }
-  input.disabled = false;
+  await state.db.from('mensajes_debate').insert({ debate_id: state.debateId, postura_id: state.posturaId, autor_id: state.user.id, contenido, cita: state.cita.texto, responde_a: state.cita.id });
+  input.value = ''; quitarCita(); await cargarMensajes(); input.disabled = false;
 }
 
 function responderA(id, txt) { 
   state.cita = { id, texto: txt.substring(0, 80) + '...' }; 
   document.getElementById('debate-cita-texto').textContent = state.cita.texto; 
   document.getElementById('debate-cita-preview').style.display = 'flex'; 
-  document.getElementById('debate-input').focus(); 
 }
 
 function quitarCita() { 
@@ -295,10 +203,4 @@ function quitarCita() {
   document.getElementById('debate-cita-preview').style.display = 'none'; 
 }
 
-function activarProtocoloBufon() { 
-  const modal = document.getElementById('bufon-modal');
-  if (modal) modal.classList.remove('oculto');
-}
-
-// ARRANQUE
 safeInit();

@@ -1,25 +1,19 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Debate — El Lugar Olvidado</title>
-  
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/debate.css">
-  
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
 
   <nav class="nav" id="main-nav">
     <div class="nav-logo">El Lugar Olvidado</div>
     <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span></span><span></span><span></span>
     </div>
     <div class="nav-links" id="nav-links">
       <a href="index.html">Explorar</a>
@@ -27,10 +21,8 @@
       <a href="foro.html">Foro</a>
       <a href="manifiesto.html">Manifiesto</a>
       <a href="autor.html">Sobre el autor</a>
-
       <span id="user-name" style="color: var(--accent); font-weight: bold; margin: 0 12px; font-size: 0.9em;"></span>
       <a href="#" id="auth-button">Entrar</a>
-
       <a href="perfil.html" class="nav-perfil" id="nav-user">Mi perfil</a>
     </div>
   </nav>
@@ -39,35 +31,42 @@
     
     <section id="fase-posturas" class="debate-fase oculto">
       <div class="debate-fase-header">
-        <h1 id="debate-titulo" class="debate-titulo">Cargando debate...</h1>
-        <p class="debate-sub" style="margin-top: 10px; opacity: 0.7;">Selecciona la postura que defenderás con argumentos. Esta elección es inmutable.</p>
+        <h1 id="debate-titulo" class="debate-titulo">Cargando...</h1>
+        <p class="debate-sub">Selecciona la postura que defenderás con argumentos. Esta elección es inmutable.</p>
       </div>
-      
       <div id="debate-burbujas" class="debate-burbujas-grid"></div>
     </section>
 
     <section id="fase-examen" class="debate-fase oculto">
       <div class="debate-fase-header">
-        <h2 style="font-family: var(--font-serif); font-size: 2rem;">Criterio de Admisión</h2>
-        <p class="debate-sub" style="margin-top: 10px; opacity: 0.7;">Demuestra que entiendes las reglas del foro.</p>
+        <h2 style="font-family: var(--font-serif); font-size: 2.2rem; color: #F0EAD6;">El Pacto del Foro</h2>
+        <p class="debate-sub">Para forjar argumentos, primero debes conocer la ley.</p>
       </div>
-      <div id="examen-preguntas"></div>
-      <p id="examen-nota" style="color: var(--accent); margin-top: 15px; font-weight: bold; text-align: center;"></p>
-      <div style="display:flex; justify-content:center; margin-top:30px;">
-        <button class="debate-confirmar-btn" onclick="enviarExamen()">Enviar y Entrar</button>
+
+      <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(196,168,232,0.2); padding: 25px; border-radius: 8px; margin-bottom: 30px; max-width: 600px; text-align: left;">
+        <h3 style="color: #C4A8E8; margin-bottom: 15px; font-size: 1.2rem; border-bottom: 1px solid rgba(196,168,232,0.2); padding-bottom: 10px;">Leyes de Integridad</h3>
+        <ul style="list-style-type: none; padding: 0; color: #e0e0e0; font-size: 0.95rem; line-height: 1.6;">
+          <li style="margin-bottom: 12px;"><strong style="color: #fff;">I. Cita antes de atacar:</strong> Nunca respondas sin citar la parte que refutas.</li>
+          <li style="margin-bottom: 12px;"><strong style="color: #fff;">II. Cero Ad Hominem:</strong> Ataca la idea, jamás a la persona. El castigo es el silencio permanente.</li>
+          <li><strong style="color: #fff;">III. Calidad:</strong> Un mensaje corto y letal vale más que tres párrafos vacíos.</li>
+        </ul>
       </div>
+
+      <div id="examen-preguntas" style="max-width: 600px; width: 100%; text-align: left;"></div>
+      <p id="examen-nota" style="color: #FF4444; margin-top: 15px; font-weight: bold;"></p>
+      <button class="debate-confirmar-btn" onclick="enviarExamen()" style="margin-top:20px;">Firmar Pacto</button>
     </section>
 
     <section id="fase-debate" class="debate-fase oculto">
-      <h2 id="debate-titulo-2" class="debate-titulo" style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Cargando...</h2>
-      <div id="debate-tu-postura" class="debate-tu-postura-wrap" style="margin-bottom: 2rem; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.9rem;"></div>
+      <h2 id="debate-titulo-2" class="debate-titulo" style="font-size: 2rem; margin-bottom: 0.5rem;">Cargando...</h2>
+      <div id="debate-tu-postura" class="debate-tu-postura-wrap" style="margin-bottom: 2rem;"></div>
       
       <div id="debate-mensajes" class="debate-mensajes-container"></div>
       
       <div id="debate-input-wrap" class="debate-input-wrap">
-        <div id="debate-cita-preview" style="display:none; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+        <div id="debate-cita-preview" style="display:none; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between;">
           <span id="debate-cita-texto" style="font-style: italic; color: #aaa; font-size: 0.85rem;"></span>
-          <button onclick="quitarCita()" style="background: none; border: none; color: white; cursor: pointer; padding: 0 10px;">✕</button>
+          <button onclick="quitarCita()" style="background: none; border: none; color: white; cursor: pointer;">✕</button>
         </div>
         <div style="display: flex; gap: 10px; width: 100%;">
           <textarea id="debate-input" class="debate-textarea" placeholder="Forja tu argumento..."></textarea>
@@ -75,19 +74,10 @@
         </div>
       </div>
     </section>
-
   </main>
 
-  <div id="bufon-modal" class="oculto" style="position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; text-align:center; padding: 20px;">
-    <h1 style="font-size: 4rem; margin-bottom: 20px;">🎭</h1>
-    <h2 style="color: #FF4444; font-family: 'IM Fell English', serif; font-size: 2.5rem;">El Protocolo del Bufón</h2>
-    <p style="max-width: 500px; line-height: 1.6; margin-top: 20px; font-size: 1.1rem; opacity: 0.8;">Tu voz ha sido silenciada permanentemente en los registros de este foro por violar las leyes de integridad. Puedes leer el conocimiento de otros, pero no puedes participar.</p>
-    <a href="index.html" style="margin-top: 40px; color: #C4A8E8; text-decoration: none; border-bottom: 1px solid #C4A8E8; padding-bottom: 2px;">Volver al inicio</a>
-  </div>
-
   <script src="js/auth.js"></script>
-  <script src="js/debate.js"></script>
-  
+  <script src="js/debate.js?v=1000"></script>
   <script>
     function toggleMenu() {
       const links = document.getElementById('nav-links');
