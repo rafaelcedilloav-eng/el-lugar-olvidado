@@ -3,7 +3,7 @@
 const DEBATE_UUID_MAP = {
   'debate-libre-albedrio': '0fd5b9a3-c8cb-459d-9e2f-e7791b8d21e1',
   'debate-moral':          '4cc14c5f-98a2-4e5d-b282-0dc07a56b5f5',
-  'debate-conciencia': 'acaf7505-e33e-4ddc-9ea4-36363ce943f8',
+  'debate-conciencia':     'acaf7505-e33e-4ddc-9ea4-36363ce943f8',
   'debate-tiempo':         '3c228fcf-9c20-4c84-9648-3710b54e0d57'
 };
 
@@ -28,16 +28,16 @@ const POSTURA_UUID_MAP = {
 
 const POSTURAS_CONFIG = {
   'debate-libre-albedrio': [
-    { id: 'determinismo',    nombre: 'Determinismo',            desc: 'Nuestras decisiones son producto de causas previas, no de libertad real.',      color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
-    { id: 'compatibilismo',  nombre: 'Compatibilismo',          desc: 'La libertad y el determinismo pueden coexistir sin contradicción.',              color: '#C4A8E8', colorBg: 'rgba(196,168,232,0.08)', colorBorder: 'rgba(196,168,232,0.25)', colorShadow: 'rgba(196,168,232,0.12)' },
-    { id: 'libertarismo',    nombre: 'Libertarismo filosófico', desc: 'Somos genuinamente libres más allá de las causas que nos precedieron.',          color: '#34D399', colorBg: 'rgba(52,211,153,0.08)',  colorBorder: 'rgba(52,211,153,0.25)',  colorShadow: 'rgba(52,211,153,0.12)'  },
-    { id: 'escepticismo',    nombre: 'Escepticismo',            desc: 'El libre albedrío es una ilusión útil que el sistema necesita para funcionar.',  color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)',  colorBorder: 'rgba(251,146,60,0.25)',  colorShadow: 'rgba(251,146,60,0.12)'  }
+    { id: 'determinismo',   nombre: 'Determinismo',            desc: 'Nuestras decisiones son producto de causas previas, no de libertad real.',      color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
+    { id: 'compatibilismo', nombre: 'Compatibilismo',          desc: 'La libertad y el determinismo pueden coexistir sin contradicción.',             color: '#C4A8E8', colorBg: 'rgba(196,168,232,0.08)', colorBorder: 'rgba(196,168,232,0.25)', colorShadow: 'rgba(196,168,232,0.12)' },
+    { id: 'libertarismo',   nombre: 'Libertarismo filosófico', desc: 'Somos genuinamente libres más allá de las causas que nos precedieron.',         color: '#34D399', colorBg: 'rgba(52,211,153,0.08)',  colorBorder: 'rgba(52,211,153,0.25)',  colorShadow: 'rgba(52,211,153,0.12)'  },
+    { id: 'escepticismo',   nombre: 'Escepticismo',            desc: 'El libre albedrío es una ilusión útil que el sistema necesita para funcionar.', color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)',  colorBorder: 'rgba(251,146,60,0.25)',  colorShadow: 'rgba(251,146,60,0.12)'  }
   ],
   'debate-moral': [
     { id: 'relativismo',      nombre: 'Relativismo',      desc: 'La moral es cultural y contextual, no existe una moral universal válida.',      color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
     { id: 'universalismo',    nombre: 'Universalismo',    desc: 'Existen principios morales válidos para toda la humanidad, en todo tiempo.',    color: '#C4A8E8', colorBg: 'rgba(196,168,232,0.08)', colorBorder: 'rgba(196,168,232,0.25)', colorShadow: 'rgba(196,168,232,0.12)' },
     { id: 'construccionismo', nombre: 'Construccionismo', desc: 'La moral se construye colectivamente, no se hereda ni se descubre.',            color: '#34D399', colorBg: 'rgba(52,211,153,0.08)',  colorBorder: 'rgba(52,211,153,0.25)',  colorShadow: 'rgba(52,211,153,0.12)'  },
-    { id: 'nihilismo-moral',  nombre: 'Nihilismo moral',  desc: 'La moral no tiene fundamento objetivo. Todo juicio moral es una proyección.',  color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)',  colorBorder: 'rgba(251,146,60,0.25)',  colorShadow: 'rgba(251,146,60,0.12)'  }
+    { id: 'nihilismo-moral',  nombre: 'Nihilismo moral',  desc: 'La moral no tiene fundamento objetivo. Todo juicio moral es una proyección.', color: '#FB923C', colorBg: 'rgba(251,146,60,0.08)',  colorBorder: 'rgba(251,146,60,0.25)',  colorShadow: 'rgba(251,146,60,0.12)'  }
   ],
   'debate-conciencia': [
     { id: 'materialismo', nombre: 'Materialismo', desc: 'La conciencia es producto del cerebro y la materia. Nada más existe.',           color: '#60A5FA', colorBg: 'rgba(96,165,250,0.08)',   colorBorder: 'rgba(96,165,250,0.25)',   colorShadow: 'rgba(96,165,250,0.12)'  },
@@ -84,15 +84,15 @@ const PREGUNTAS_EXAMEN = [
 ];
 
 // ── ESTADO ────────────────────────────────────────────────────────────────────
-let debateId          = null;
-let debateSlug        = null;
-let debateTitulo      = '';
+let debateId            = null;
+let debateSlug          = null;
+let debateTitulo        = '';
 let posturaSeleccionada = null;
 let posturaIdSupabase   = null;
-let userId            = null;
-let nivelUsuario      = 1;
-let citaActiva        = null;
-let respondiendoA     = null;
+let userId              = null;
+let nivelUsuario        = 1;
+let citaActiva          = null;
+let respondiendoA       = null;
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function initDebate() {
@@ -110,7 +110,7 @@ async function initDebate() {
   if (!user) return;
   userId = user.id;
 
-  const { data: profile } = await db.from('profiles').select('nivel').eq('id', user.id).single();
+  const { data: profile } = await db.from('profiles').select('nivel').eq('id', user.id).maybeSingle();
   nivelUsuario = profile?.nivel || 1;
 
   const titulos = {
@@ -124,13 +124,18 @@ async function initDebate() {
   document.getElementById('debate-titulo').textContent   = debateTitulo;
   document.getElementById('debate-titulo-2').textContent = debateTitulo;
 
-  // Verificar si ya participó
-  const { data: participante } = await db
+  // Verificar si ya participó (USANDO .maybeSingle() PARA EVITAR ERROR 406)
+  const { data: participante, error: partError } = await db
     .from('participantes_debate')
     .select('*')
     .eq('debate_id', debateId)
     .eq('user_id', user.id)
-    .single();
+    .maybeSingle();
+
+  if (partError) {
+    console.error("Error al verificar participante:", partError);
+    return;
+  }
 
   if (participante?.aprobado_reglamento) {
     posturaIdSupabase   = participante.postura_id;
@@ -282,17 +287,27 @@ async function renderPosturasBar() {
 
 // ── CARGAR MENSAJES ───────────────────────────────────────────────────────────
 async function cargarMensajes() {
-    console.log('debateId:', debateId, 'debateSlug:', debateSlug);
+  const contenedor = document.getElementById('debate-mensajes');
+  
+  // FAILSAFE DE CONTENEDOR: Si no existe, abortamos antes de consumir recursos
+  if (!contenedor) {
+    console.error("CRÍTICO: No se encontró el contenedor 'debate-mensajes' en el DOM.");
+    return;
+  }
+
   const db = window.__ELO.getClient();
 
-  const { data: mensajes } = await db
+  const { data: mensajes, error } = await db
     .from('mensajes_debate')
     .select('*, profiles(username, avatar_url, nivel)')
     .eq('debate_id', debateId)
     .is('responde_a', null)
     .order('created_at', { ascending: true });
-
-  const contenedor = document.getElementById('debate-mensajes');
+    
+  if (error) {
+    console.error("Error cargando mensajes:", error);
+    return;
+  }
 
   if (!mensajes || mensajes.length === 0) {
     contenedor.innerHTML = `<div class="debate-vacio">Sé el primero en abrir el debate.</div>`;
@@ -380,30 +395,42 @@ document.addEventListener('mouseup', () => {
 
 // ── ENVIAR MENSAJE ────────────────────────────────────────────────────────────
 async function enviarMensaje() {
-  const input    = document.getElementById('debate-input');
+  const input     = document.getElementById('debate-input');
   const contenido = input.value.trim();
   if (!contenido) return;
 
   const db = window.__ELO.getClient();
 
   const { data: { user: currentUser } } = await db.auth.getUser();
-if (!currentUser) return;
+  if (!currentUser) return;
+
+  // Bloquear input mientras se procesa para prevenir spam/múltiples clicks
+  input.disabled = true;
 
   const { error } = await db.from('mensajes_debate').insert({
     debate_id:  debateId,
     postura_id: posturaIdSupabase,
-    user_id:    userId,
-    contenido,
+    autor_id:   currentUser.id, // FIX CRÍTICO: Debe ser autor_id para pasar las reglas RLS
+    contenido:  contenido,
     cita:       citaActiva || null,
     responde_a: respondiendoA || null,
     tipo:       'debate'
   });
 
-  if (error) { console.error('Error enviando mensaje:', error); return; }
+  input.disabled = false;
+
+  if (error) { 
+    console.error('Error enviando mensaje:', error); 
+    alert("Hubo un error al publicar tu mensaje. Verifica tu conexión.");
+    return; 
+  }
 
   input.value = '';
   quitarCita();
   respondiendoA = null;
+
+  // FIX DE UX: Forzamos el renderizado inmediato para el autor. Cero latencia visual.
+  await cargarMensajes();
 }
 
 // ── REALTIME ──────────────────────────────────────────────────────────────────
