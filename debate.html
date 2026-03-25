@@ -3,15 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Debate — El Lugar Olvidado">
+  <meta name="author" content="Rafael Cedillo">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Debate — El Lugar Olvidado</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/debate.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
   <nav class="nav" id="main-nav">
-    <div class="nav-logo">El Lugar Olvidado</div>
+    <a href="index.html" class="nav-logo">El Lugar Olvidado</a>
     <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
       <span></span>
       <span></span>
@@ -28,7 +32,8 @@
   </nav>
 
   <main class="container">
-    
+
+    <!-- ── FASE 1: SELECCIÓN DE POSTURA ── -->
     <section id="fase-posturas" class="debate-fase">
       <div class="debate-fase-header">
         <p class="debate-kicker">Foro de discusión</p>
@@ -36,8 +41,7 @@
         <p class="debate-sub">Selecciona la postura que defenderás con argumentos. Esta elección es inmutable durante el ciclo del debate.</p>
       </div>
 
-      <div class="debate-burbujas-grid" id="debate-burbujas">
-        </div>
+      <div class="debate-burbujas-grid" id="debate-burbujas"></div>
 
       <div class="debate-confirmar-wrap">
         <button class="debate-confirmar-btn" id="btn-confirmar" disabled onclick="confirmarPostura()">
@@ -46,18 +50,38 @@
       </div>
     </section>
 
+    <!-- ── FASE 2: EXAMEN DE REGLAMENTO ── -->
+    <section id="fase-examen" class="debate-fase oculto">
+      <div class="debate-fase-header">
+        <p class="debate-kicker">Antes de debatir</p>
+        <h2 class="debate-titulo" style="font-size:clamp(1.4rem,3vw,2rem)">Examen de Reglamento</h2>
+        <p class="debate-sub">Responde correctamente al menos 4 de 5 preguntas para ingresar al debate.</p>
+      </div>
+
+      <div id="examen-preguntas" class="examen-preguntas"></div>
+
+      <div class="debate-confirmar-wrap">
+        <p class="examen-nota" id="examen-nota"></p>
+        <button class="debate-confirmar-btn" onclick="enviarExamen()">
+          Enviar respuestas
+        </button>
+      </div>
+    </section>
+
+    <!-- ── FASE 3: DEBATE ── -->
     <section id="fase-debate" class="debate-fase oculto">
       <div class="debate-header-compact">
         <h2 id="debate-titulo-2" class="debate-titulo-sm">Título del Debate</h2>
         <div id="debate-tu-postura" class="debate-badge-postura"></div>
       </div>
 
+      <div id="debate-posturas-bar" class="debate-posturas-bar"></div>
+
       <div class="debate-mensajes-wrapper">
-        <div id="debate-mensajes" class="debate-mensajes">
-          </div>
+        <div id="debate-mensajes" class="debate-mensajes"></div>
       </div>
 
-      <div class="debate-input-area">
+      <div class="debate-input-area" id="debate-input-wrap">
         <div class="debate-input-container">
           <div id="debate-cita-preview" class="debate-cita-preview oculto">
             <div class="cita-content">
@@ -66,12 +90,12 @@
             </div>
             <button class="cita-close" onclick="cancelarCita()">✕</button>
           </div>
-          
+
           <div class="debate-input-row">
-            <textarea 
-              id="debate-input" 
-              class="debate-textarea" 
-              placeholder="Escribe tu argumento..."
+            <textarea
+              id="debate-input"
+              class="debate-textarea"
+              placeholder="Forja tu argumento..."
               rows="1"
             ></textarea>
             <button id="btn-enviar" class="debate-enviar-btn" onclick="enviarMensaje()">
@@ -86,6 +110,7 @@
 
   </main>
 
+  <!-- Modal Bufón -->
   <div id="bufon-modal" class="modal-bufon oculto">
     <div class="modal-bufon-content">
       <div class="bufon-icon">🎭</div>
@@ -95,7 +120,9 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
   <script src="js/debate.js"></script>
   <script>
     function toggleMenu() {

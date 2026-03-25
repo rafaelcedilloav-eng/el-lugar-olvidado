@@ -3,7 +3,7 @@
 const DEBATE_UUID_MAP = {
   'debate-libre-albedrio': '0fd5b9a3-c8cb-459d-9e2f-e7791b8d21e1',
   'debate-moral':          '4cc14c5f-98a2-4e5d-b282-0dc07a56b5f5',
-  'debate-conciencia': 'acaf7505-e33e-4ddc-9ea4-36363ce943f8',
+  'debate-conciencia':     'acaf7505-e33e-4ddc-9ea4-36363ce943f8',
   'debate-tiempo':         '3c228fcf-9c20-4c84-9648-3710b54e0d57'
 };
 
@@ -84,15 +84,15 @@ const PREGUNTAS_EXAMEN = [
 ];
 
 // ── ESTADO ────────────────────────────────────────────────────────────────────
-let debateId          = null;
-let debateSlug        = null;
-let debateTitulo      = '';
+let debateId            = null;
+let debateSlug          = null;
+let debateTitulo        = '';
 let posturaSeleccionada = null;
 let posturaIdSupabase   = null;
-let userId            = null;
-let nivelUsuario      = 1;
-let citaActiva        = null;
-let respondiendoA     = null;
+let userId              = null;
+let nivelUsuario        = 1;
+let citaActiva          = null;
+let respondiendoA       = null;
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 async function initDebate() {
@@ -124,13 +124,13 @@ async function initDebate() {
   document.getElementById('debate-titulo').textContent   = debateTitulo;
   document.getElementById('debate-titulo-2').textContent = debateTitulo;
 
-  // Verificar si ya participó
+  // FIX: .maybeSingle() en lugar de .single() para evitar error 406
   const { data: participante } = await db
     .from('participantes_debate')
     .select('*')
     .eq('debate_id', debateId)
     .eq('user_id', user.id)
-    .single();
+    .maybeSingle();
 
   if (participante?.aprobado_reglamento) {
     posturaIdSupabase   = participante.postura_id;
@@ -261,6 +261,7 @@ async function renderPosturasBar() {
   const db       = window.__ELO.getClient();
   const posturas = POSTURAS_CONFIG[debateSlug];
   const bar      = document.getElementById('debate-posturas-bar');
+  if (!bar) return;
 
   const chips = await Promise.all(posturas.map(async p => {
     const uuid = POSTURA_UUID_MAP[p.id];
@@ -282,7 +283,6 @@ async function renderPosturasBar() {
 
 // ── CARGAR MENSAJES ───────────────────────────────────────────────────────────
 async function cargarMensajes() {
-    console.log('debateId:', debateId, 'debateSlug:', debateSlug);
   const db = window.__ELO.getClient();
 
   const { data: mensajes } = await db
@@ -293,6 +293,7 @@ async function cargarMensajes() {
     .order('created_at', { ascending: true });
 
   const contenedor = document.getElementById('debate-mensajes');
+  if (!contenedor) return;
 
   if (!mensajes || mensajes.length === 0) {
     contenedor.innerHTML = `<div class="debate-vacio">Sé el primero en abrir el debate.</div>`;
@@ -301,6 +302,9 @@ async function cargarMensajes() {
 
   const htmls = await Promise.all(mensajes.map(m => renderMensaje(m, false)));
   contenedor.innerHTML = htmls.join('');
+
+  // Scroll al final
+  contenedor.scrollTop = contenedor.scrollHeight;
 }
 
 // ── RENDER MENSAJE ────────────────────────────────────────────────────────────
@@ -355,15 +359,19 @@ function responderA(msgId, contenido) {
 
 function setCita(texto) {
   citaActiva = texto;
-  document.getElementById('debate-cita-texto').textContent = texto;
-  document.getElementById('debate-cita-preview').style.display = 'flex';
+  const textoEl = document.getElementById('cita-texto');
+  const preview = document.getElementById('debate-cita-preview');
+  if (textoEl) textoEl.textContent = texto;
+  if (preview) preview.classList.remove('oculto');
 }
 
-function quitarCita() {
+function cancelarCita() {
   citaActiva    = null;
   respondiendoA = null;
-  document.getElementById('debate-cita-preview').style.display = 'none';
-  document.getElementById('debate-cita-texto').textContent = '';
+  const preview = document.getElementById('debate-cita-preview');
+  const textoEl = document.getElementById('cita-texto');
+  if (preview) preview.classList.add('oculto');
+  if (textoEl) textoEl.textContent = '';
 }
 
 document.addEventListener('mouseup', () => {
@@ -386,21 +394,33 @@ async function enviarMensaje() {
 
   const db = window.__ELO.getClient();
 
+  // Verificar identidad real en tiempo de envío
+  const { data: { user: currentUser } } = await db.auth.getUser();
+  if (!currentUser) return;
+
+  const btnEnviar = document.getElementById('btn-enviar');
+  if (btnEnviar) btnEnviar.disabled = true;
+
   const { error } = await db.from('mensajes_debate').insert({
     debate_id:  debateId,
     postura_id: posturaIdSupabase,
-    user_id:    userId,
+    user_id:    currentUser.id,
     contenido,
     cita:       citaActiva || null,
     responde_a: respondiendoA || null,
     tipo:       'debate'
   });
 
+  if (btnEnviar) btnEnviar.disabled = false;
+
   if (error) { console.error('Error enviando mensaje:', error); return; }
 
   input.value = '';
-  quitarCita();
+  cancelarCita();
   respondiendoA = null;
+
+  // FIX CRÍTICO: recargar mensajes explícitamente después de enviar
+  await cargarMensajes();
 }
 
 // ── REALTIME ──────────────────────────────────────────────────────────────────
@@ -419,7 +439,8 @@ function suscribirMensajes() {
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function mostrarFase(faseId) {
   document.querySelectorAll('.debate-fase').forEach(f => f.classList.add('oculto'));
-  document.getElementById(faseId).classList.remove('oculto');
+  const fase = document.getElementById(faseId);
+  if (fase) fase.classList.remove('oculto');
 }
 
 function escapeStr(str) {
