@@ -174,8 +174,7 @@ function seleccionarPostura(id) {
 
 function confirmarPostura() {
   if (!posturaSeleccionada) return;
-  mostrarFase('fase-examen');
-  renderExamen();
+  mostrarFase('fase-reglamento');
 }
 
 // ── RENDER EXAMEN ─────────────────────────────────────────────────────────────
@@ -408,7 +407,7 @@ async function enviarMensaje() {
     contenido,
     cita:       citaActiva || null,
     responde_a: respondiendoA || null,
-    tipo:       'debate'
+  
   });
 
   if (btnEnviar) btnEnviar.disabled = false;
