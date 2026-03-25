@@ -21,6 +21,7 @@
       <a href="foro.html">Foro</a>
       <a href="manifiesto.html">Manifiesto</a>
       <a href="autor.html">Sobre el autor</a>
+      
       <span id="user-name" style="color: var(--accent); font-weight: bold; margin: 0 12px; font-size: 0.9em;"></span>
       <a href="#" id="auth-button">Entrar</a>
       <a href="perfil.html" class="nav-perfil" id="nav-user">Mi perfil</a>
@@ -53,20 +54,22 @@
       </div>
 
       <div id="examen-preguntas" style="max-width: 600px; width: 100%; text-align: left;"></div>
-      <p id="examen-nota" style="color: #FF4444; margin-top: 15px; font-weight: bold;"></p>
-      <button class="debate-confirmar-btn" onclick="enviarExamen()" style="margin-top:20px;">Firmar Pacto</button>
+      <p id="examen-nota" style="color: #FF4444; margin-top: 15px; font-weight: bold; text-align: center; height: 20px;"></p>
+      <div style="display:flex; justify-content:center; margin-top:30px;">
+        <button class="debate-confirmar-btn" onclick="enviarExamen()">Firmar Pacto y Entrar</button>
+      </div>
     </section>
 
     <section id="fase-debate" class="debate-fase oculto">
-      <h2 id="debate-titulo-2" class="debate-titulo" style="font-size: 2rem; margin-bottom: 0.5rem;">Cargando...</h2>
-      <div id="debate-tu-postura" class="debate-tu-postura-wrap" style="margin-bottom: 2rem;"></div>
+      <h2 id="debate-titulo-2" class="debate-titulo" style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Cargando...</h2>
+      <div id="debate-tu-postura" class="debate-tu-postura-wrap" style="margin-bottom: 2rem; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.9rem;"></div>
       
       <div id="debate-mensajes" class="debate-mensajes-container"></div>
       
       <div id="debate-input-wrap" class="debate-input-wrap">
-        <div id="debate-cita-preview" style="display:none; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between;">
+        <div id="debate-cita-preview" style="display:none; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
           <span id="debate-cita-texto" style="font-style: italic; color: #aaa; font-size: 0.85rem;"></span>
-          <button onclick="quitarCita()" style="background: none; border: none; color: white; cursor: pointer;">✕</button>
+          <button onclick="quitarCita()" style="background: none; border: none; color: white; cursor: pointer; padding: 0 10px;">✕</button>
         </div>
         <div style="display: flex; gap: 10px; width: 100%;">
           <textarea id="debate-input" class="debate-textarea" placeholder="Forja tu argumento..."></textarea>
@@ -74,14 +77,16 @@
         </div>
       </div>
     </section>
+
   </main>
 
   <script src="js/auth.js"></script>
-  <script src="js/debate.js?v=1000"></script>
+  <script src="js/debate.js?v=1.0.1"></script>
+  
   <script>
     function toggleMenu() {
       const links = document.getElementById('nav-links');
-      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+      links.style.display = (links.style.display === 'flex') ? 'none' : 'flex';
     }
   </script>
 </body>
