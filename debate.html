@@ -4,119 +4,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Debate — El Lugar Olvidado">
-  <meta http-equiv="X-Content-Type-Options" content="nosniff">
-  <meta http-equiv="X-Frame-Options" content="DENY">
-  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Debate — El Lugar Olvidado</title>
+  
   <link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/debate.css">
+  <link rel="stylesheet" href="css/debate.css">
+  
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
-  <!-- NAV -->
   <nav class="nav" id="main-nav">
-    <a href="index.html" class="nav-logo">El Lugar Olvidado</a>
-    <div class="nav-hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <div class="nav-logo">El Lugar Olvidado</div>
+    <div class="nav-hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
     <div class="nav-links" id="nav-links">
-      <a href="index.html" class="nav-logo">El Lugar Olvidado</a>
-<a href="index.html">Explorar</a>
-<a href="ensayos.html">Ensayos</a>
-<a href="foro.html" class="nav-active">Foro</a>
-<a href="manifiesto.html">Manifiesto</a>
-<a href="autor.html">Sobre el autor</a>
-<a href="perfil.html" class="nav-perfil" id="nav-user">Mi perfil</a>
+      <a href="index.html">Explorar</a>
+      <a href="ensayos.html">Ensayos</a>
+      <a href="foro.html">Foro</a>
+      <a href="manifiesto.html">Manifiesto</a>
+      <a href="autor.html">Sobre el autor</a>
+
+      <span id="user-name" style="color: var(--accent); font-weight: bold; margin: 0 12px; font-size: 0.9em;"></span>
+      <a href="#" id="auth-button">Entrar</a>
+
+      <a href="perfil.html" class="nav-perfil" id="nav-user">Mi perfil</a>
     </div>
   </nav>
 
-  <!-- FASE 1: SELECCIÓN DE POSTURA -->
-  <div class="debate-fase" id="fase-postura">
-    <div class="debate-fase-header">
-      <p class="debate-kicker" id="debate-kicker">— Debate —</p>
-      <h1 class="debate-titulo" id="debate-titulo">Cargando...</h1>
-      <p class="debate-instruccion">
-        Para ser parte de este debate primero debes tener una postura que defender.<br>
-        <span>¿Con cuál de estas ideas resonas más?</span>
-      </p>
-    </div>
-    <div class="debate-burbujas" id="debate-burbujas"></div>
-    <button class="debate-espectador-btn" onclick="entrarComoEspectador()">
-  Solo quiero observar
-</button>
-    <p class="debate-nota">No verás el nombre de la postura hasta que elijas. Elige por convicción, no por etiqueta.</p>
+  <main class="container">
+    
+    <section id="fase-posturas" class="debate-fase oculto">
+      <div class="debate-fase-header">
+        <h1 id="debate-titulo" class="debate-titulo">Cargando debate...</h1>
+        <p class="debate-sub" style="margin-top: 10px; opacity: 0.7;">Selecciona la postura que defenderás con argumentos. Esta elección es inmutable.</p>
+      </div>
+      
+      <div id="debate-burbujas" class="debate-burbujas-grid"></div>
+    </section>
+
+    <section id="fase-examen" class="debate-fase oculto">
+      <div class="debate-fase-header">
+        <h2 style="font-family: var(--font-serif); font-size: 2rem;">Criterio de Admisión</h2>
+        <p class="debate-sub" style="margin-top: 10px; opacity: 0.7;">Demuestra que entiendes las reglas del foro.</p>
+      </div>
+      <div id="examen-preguntas"></div>
+      <p id="examen-nota" style="color: var(--accent); margin-top: 15px; font-weight: bold; text-align: center;"></p>
+      <div style="display:flex; justify-content:center; margin-top:30px;">
+        <button class="debate-confirmar-btn" onclick="enviarExamen()">Enviar y Entrar</button>
+      </div>
+    </section>
+
+    <section id="fase-debate" class="debate-fase oculto">
+      <h2 id="debate-titulo-2" class="debate-titulo" style="font-size: 2rem; margin-bottom: 0.5rem; text-align: center;">Cargando...</h2>
+      <div id="debate-tu-postura" class="debate-tu-postura-wrap" style="margin-bottom: 2rem; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.9rem;"></div>
+      
+      <div id="debate-mensajes" class="debate-mensajes-container"></div>
+      
+      <div id="debate-input-wrap" class="debate-input-wrap">
+        <div id="debate-cita-preview" style="display:none; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 5px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+          <span id="debate-cita-texto" style="font-style: italic; color: #aaa; font-size: 0.85rem;"></span>
+          <button onclick="quitarCita()" style="background: none; border: none; color: white; cursor: pointer; padding: 0 10px;">✕</button>
+        </div>
+        <div style="display: flex; gap: 10px; width: 100%;">
+          <textarea id="debate-input" class="debate-textarea" placeholder="Forja tu argumento..."></textarea>
+          <button class="debate-enviar-btn" onclick="enviarMensaje()">Enviar</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="bufon-modal" class="oculto" style="position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; text-align:center; padding: 20px;">
+    <h1 style="font-size: 4rem; margin-bottom: 20px;">🎭</h1>
+    <h2 style="color: #FF4444; font-family: 'IM Fell English', serif; font-size: 2.5rem;">El Protocolo del Bufón</h2>
+    <p style="max-width: 500px; line-height: 1.6; margin-top: 20px; font-size: 1.1rem; opacity: 0.8;">Tu voz ha sido silenciada permanentemente en los registros de este foro por violar las leyes de integridad. Puedes leer el conocimiento de otros, pero no puedes participar.</p>
+    <a href="index.html" style="margin-top: 40px; color: #C4A8E8; text-decoration: none; border-bottom: 1px solid #C4A8E8; padding-bottom: 2px;">Volver al inicio</a>
   </div>
 
-  <!-- FASE 2: EXAMEN DE REGLAMENTO -->
-  <div class="debate-fase oculto" id="fase-examen">
-    <div class="examen-wrap">
-      <p class="debate-kicker">— Antes de continuar —</p>
-      <h2 class="examen-titulo">El Reglamento del Lugar</h2>
-      <div class="examen-reglamento">
-        <p>Este es un espacio de debate filosófico serio. Al participar aceptas:</p>
-        <ul>
-          <li>Respetar a los demás participantes en todo momento</li>
-          <li>Citar el fragmento específico al que respondes</li>
-          <li>Defender tu postura con argumentos, no con descalificaciones</li>
-          <li>Las groserías e insultos resultan en mute inmediato sin advertencia</li>
-          <li>Tres infracciones = mute de 1 hora. Cuatro = mute permanente</li>
-          <li>Cambiar de postura requiere una explicación de al menos 200 caracteres</li>
-          <li>El Fundador puede moderar en cualquier momento</li>
-        </ul>
-      </div>
-      <div class="examen-preguntas" id="examen-preguntas"></div>
-      <p class="examen-nota" id="examen-nota"></p>
-      <button class="examen-btn" id="examen-btn" onclick="enviarExamen()">Verificar respuestas</button>
-    </div>
-  </div>
-
-  <!-- FASE 3: DEBATE -->
-  <div class="debate-fase oculto" id="fase-debate">
-
-    <!-- Header del debate -->
-    <div class="debate-header">
-      <div class="debate-header-info">
-        <p class="debate-kicker" id="debate-kicker-2">— Debate —</p>
-        <h1 class="debate-titulo-sm" id="debate-titulo-2">...</h1>
-      </div>
-      <div class="debate-tu-postura" id="debate-tu-postura"></div>
-    </div>
-
-    <!-- Burbujas de posturas activas -->
-    <div class="debate-posturas-bar" id="debate-posturas-bar"></div>
-
-    <!-- Mensajes -->
-    <div class="debate-mensajes-wrap">
-      <div class="debate-mensajes" id="debate-mensajes">
-        <div class="debate-mensajes-loading">Cargando mensajes...</div>
-      </div>
-    </div>
-
-    <!-- Caja de texto -->
-    <div class="debate-input-wrap" id="debate-input-wrap">
-      <div class="debate-cita-preview" id="debate-cita-preview" style="display:none">
-        <span class="debate-cita-texto" id="debate-cita-texto"></span>
-        <button class="debate-cita-quitar" onclick="quitarCita()">✕</button>
-      </div>
-      <div class="debate-input-row">
-        <textarea
-          id="debate-input"
-          class="debate-textarea"
-          placeholder="Escribe tu argumento..."
-          rows="3"
-          maxlength="1000"
-        ></textarea>
-        <button class="debate-enviar-btn" onclick="enviarMensaje()">Enviar</button>
-      </div>
-      <p class="debate-input-nota">Selecciona texto de un mensaje para citarlo al responder.</p>
-    </div>
-
-  </div>
-
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/auth.js"></script>
-<script src="js/main.js"></script>
-<script src="js/debate.js"></script>
-
+  <script src="js/auth.js"></script>
+  <script src="js/debate.js"></script>
+  
+  <script>
+    function toggleMenu() {
+      const links = document.getElementById('nav-links');
+      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+    }
+  </script>
 </body>
 </html>
