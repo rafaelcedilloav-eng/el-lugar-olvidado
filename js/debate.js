@@ -403,7 +403,7 @@ async function enviarMensaje() {
   const { error } = await db.from('mensajes_debate').insert({
     debate_id:  debateId,
     postura_id: posturaIdSupabase,
-    user_id:    currentUser.id,
+    autor_id:    currentUser.id,
     contenido,
     cita:       citaActiva || null,
     responde_a: respondiendoA || null,
