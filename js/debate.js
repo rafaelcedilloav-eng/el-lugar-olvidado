@@ -174,8 +174,7 @@ function seleccionarPostura(id) {
 
 function confirmarPostura() {
   if (!posturaSeleccionada) return;
-  mostrarFase('fase-examen');
-  renderExamen();
+  mostrarFase('fase-reglamento');
 }
 
 // ── RENDER EXAMEN ─────────────────────────────────────────────────────────────
@@ -402,14 +401,13 @@ async function enviarMensaje() {
   if (btnEnviar) btnEnviar.disabled = true;
 
   const { error } = await db.from('mensajes_debate').insert({
-    debate_id:  debateId,
-    postura_id: posturaIdSupabase,
-    user_id:    currentUser.id,
-    contenido,
-    cita:       citaActiva || null,
-    responde_a: respondiendoA || null,
-    tipo:       'debate'
-  });
+  debate_id:  debateId,
+  postura_id: posturaIdSupabase,
+  autor_id:   currentUser.id,
+  contenido,
+  cita:       citaActiva || null,
+  responde_a: respondiendoA || null
+});
 
   if (btnEnviar) btnEnviar.disabled = false;
 
